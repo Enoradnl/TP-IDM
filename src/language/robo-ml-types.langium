@@ -76,8 +76,9 @@ interface BooleanExpression extends Expression {
 }
 
 interface Movement extends Statement {
-	speed: number
+	distance: number
 	direction?: Direction
+	unit: Units
 }
 
 interface Speed {
@@ -92,7 +93,6 @@ interface ArithmeticExpression extends Expression {
 }
 
 interface Rotation extends Statement {
-	speed: number
 	angle: number
 }
 
@@ -106,7 +106,9 @@ interface Loop extends Statement {
 	condition: Expression
 }
 
-interface Condition extends Statement, BooleanExpression {
+interface Condition extends Statement{
+	condition: Expression
+	statement: Statement[]
 }
 
 interface Assignment extends Statement {

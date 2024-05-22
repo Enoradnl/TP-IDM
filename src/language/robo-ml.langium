@@ -16,7 +16,7 @@ entry RoboML returns RoboML:
 // ;
 
 Statement returns Statement:
-    Movement | Rotation | Sensors | Loop | Variable | Assignment | FunctionCall | Variable 
+    Movement | Rotation | Sensors | Loop | Condition | Variable | Assignment | FunctionCall | Variable 
 ;
 
 Expression returns Expression: 
@@ -77,11 +77,11 @@ Param returns Param:
 ;
 
 Movement returns Movement:
-    {Movement} 'Movement' direction=Direction speed=INT
+    {Movement} 'Movement' direction=Direction distance=INT unit=Units
 ;
 
 Rotation returns Rotation:
-    {Rotation} 'Rotation' angle=INT speed=INT 
+    {Rotation} 'Rotation' angle=INT
 ;
 
 Sensors returns Sensors:
@@ -92,9 +92,9 @@ Loop returns Loop:
     'loop' '(' condition=Expression ')' '{'( statement+=Statement  )+'}'  
 ;
 
-// Condition returns Condition:
-//     {Condition} 'Condition' '{' ('booleanOperator' booleanOperator=BooleanOperator  )? '}'  
-// ;
+Condition returns Condition:
+    {Condition} 'if' '(' condition=Expression ')' '{'( statement+=Statement  )+'}' 
+;
 
 Assignment returns Assignment:
     variable=VariableRef '=' value=Expression
