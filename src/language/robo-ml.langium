@@ -19,45 +19,40 @@ Statement returns Statement:
     Movement | Rotation | Sensors | Loop | Variable | Assignment | FunctionCall | Variable 
 ;
 
-Statement_Impl returns Statement:
-    {Statement} 'Statement'  
+Expression returns Expression: 
+    {Expression} Exp1 ('||' Exp1)*
 ;
-
-// Expression returns Expression:
-//     Expression_Impl | Condition | BooleanExpression_Impl | ArithmeticExpression | Value 
-// ;
-
-Expression returns Expression:
-    BooleanExpression | ArithmeticExpression
+  
+Exp1 : 
+    Exp2 ('&&'  Exp2)*
 ;
-
-// Expression returns Expression:
-//     BooleanExpression | ArithmeticExpression
-// ;
-
-Expression_Impl returns Expression:
-    {Expression} 'Expression'  
+  
+Exp2  : 
+    '!'Exp2 | Exp3  
+  ;
+  
+Exp3  : Exp4 
+  ( '='   Exp4 | '<>'  Exp4 | '>'   Exp4| '>='  Exp4| '<'   Exp4  | '<='  Exp4)?
 ;
-
-// BooleanExpression returns BooleanExpression:
-//     BooleanExpression_Impl | Condition 
-// ;
-
-BooleanExpression returns BooleanExpression:
-    left=BooleanValue booleanOperator=BooleanOperator right=BooleanValue | BooleanValue
+  
+Exp4  : 
+    Exp5 ( '+'   Exp5| '-'   Exp5)*
 ;
-
-// Fonction returns Fonction:
-//     'Fonction' '{' ('type' ^type=Type  )? 'statement' '{' statement+=Statement  ("," statement+=Statement  )* '}' ('param' '{' param+=Param  ("," param+=Param  )* '}' )? '}'  
-// ;
+  
+Exp5  : Primaire
+        ( '*'   Primaire
+        | '/'  Primaire 
+        )*
+  ;
+  
+Primaire: Value
+  | ID
+  | '(' Expression ')'
+  ;
 
 Fonction returns Fonction:
     'let' ('void' | ^type=Type  ) functionName=ID '('( param+=Param  ("," param+=Param  )*  )? ')' '{' (statement+=Statement)+ (ReturnInstruction)'}'  
 ;
-
-// Variable returns Variable:
-//     'Variable' '{' 'expression' expression=Expression  '}'  
-// ;
 
 Variable returns Variable:
     'var' varName=ID '=' expression=Expression 
@@ -82,56 +77,40 @@ Param returns Param:
 ;
 
 Movement returns Movement:
-    {Movement} 'Movement' '{' ('direction' direction=Direction  )? ('speed' '{' speed+=Speed  ("," speed+=Speed  )* '}' )? '}'  
+    {Movement} 'Movement' direction=Direction speed=INT
 ;
 
 Rotation returns Rotation:
-    {Rotation} 'Rotation' '{' ('speed' '{' speed+=Speed  ("," speed+=Speed  )* '}' )? '}'  
+    {Rotation} 'Rotation' angle=INT speed=INT 
 ;
 
 Sensors returns Sensors:
     {Sensors} 'Sensors' '{' ('time' time=Float  )? ('distance' distance=Float  )? '}'  
 ;
 
-// Loop returns Loop:
-//     'Loop' '{' 'statement' '{' statement+=Statement  ("," statement+=Statement  )* '}' 'booleanexpression' booleanexpression=BooleanExpression  '}'  
-// ;
-
 Loop returns Loop:
-    'loop' '(' booleanexpression=BooleanExpression ')' '{'( statement+=Statement  )+'}'  
+    'loop' '(' condition=Expression ')' '{'( statement+=Statement  )+'}'  
 ;
 
 // Condition returns Condition:
 //     {Condition} 'Condition' '{' ('booleanOperator' booleanOperator=BooleanOperator  )? '}'  
 // ;
 
-// Assignment returns Assignment:
-//     'Assignment' '{' 'variable' variable=Variable  'value' value=Expression  '}'  
-// ;
-
 Assignment returns Assignment:
-    'variable' variable=Variable  'value' value=Expression
+    variable=VariableRef '=' value=Expression
 ;
-
-// FunctionCall returns FunctionCall:
-//     {FunctionCall} functionRefName=ID '(' ( param+=Param  ("," param+=Param  )* )? ')'  
-// ;
 
 FunctionCall returns FunctionCall:
     {FunctionCall} functionRefName=ID '(' ( arguments+=Value  ("," arguments+=Value  )* )? ')'  
 ;
 
-// ReturnInstruction returns ReturnInstruction:
-//     'ReturnInstruction' '{' 'expression' '{' expression+=Expression  ("," expression+=Expression  )* '}' '}'  
-// ;
-
 ReturnInstruction returns ReturnInstruction:
     'return' (expression+=Expression)
 ;
 
-Speed returns Speed:
-    {Speed} 'Speed' '{' ('unit' unit=Units  )? ('arithmeticexpression' '{' arithmeticexpression+=ArithmeticExpression  ("," arithmeticexpression+=ArithmeticExpression  )* '}' )? '}'  
-;
+// Speed returns Speed:
+//     {Speed} 'Speed' '{' ('unit' unit=Units  )? ('arithmeticexpression' '{' arithmeticexpression+=ArithmeticExpression  ("," arithmeticexpression+=ArithmeticExpression  )* '}' )? '}'  
+// ;
 
 Direction returns Direction:
     Direction_Forward | Direction_Backward | Direction_Left | Direction_Right
@@ -149,14 +128,6 @@ Units_cm returns Units_cm: 'cm' ;
 Units_dm returns Units_dm: 'dm' ;
 Units_m returns Units_m: 'm' ;
 
-// ArithmeticExpression returns ArithmeticExpression:
-//     {ArithmeticExpression} 'ArithmeticExpression' '{' ('arithmeticOperator' arithmeticOperator=ArithmeticOperator  )? '}'  
-// ;
-
-ArithmeticExpression returns ArithmeticExpression:
-    left=ArithmeticValue arithmeticOperator=ArithmeticOperator right=ArithmeticValue | ArithmeticValue
-;
-
 ArithmeticOperator returns ArithmeticOperator:
     ArithmeticOperator_Plus | ArithmeticOperator_Minus | ArithmeticOperator_Multiplication | ArithmeticOperator_Division
 ;
@@ -170,10 +141,6 @@ ArithmeticOperator_Power returns ArithmeticOperator_Power: '**' ;
 Float returns Float:
     'Float' 
 ;
-
-// BooleanExpression_Impl returns BooleanExpression:
-//     {BooleanExpression} 'BooleanExpression' '{' ('booleanOperator' booleanOperator=BooleanOperator  )? '}'  
-// ;
 
 BooleanOperator returns BooleanOperator:
     BooleanOperator_NotEq | BooleanOperator_Not | BooleanOperator_Inf | BooleanOperator_Xor | BooleanOperator_Eq | BooleanOperator_And | BooleanOperator_SupEq | BooleanOperator_Sup | BooleanOperator_InfEq | BooleanOperator_Or
@@ -194,15 +161,7 @@ BooleanOperator_Xor returns BooleanOperator_Xor: 'Xor' ;
 // ;
 
 Value returns Value:
-    BooleanValue | ArithmeticValue;
-
-BooleanValue returns BooleanValue:
-    ArithmeticValue | EBoolean
-;
-
-ArithmeticValue returns ArithmeticValue:
-    VariableRef | INT | Float
-;
+    EBoolean | VariableRef | INT;
 
 EString returns string:
     STRING | ID 
@@ -215,4 +174,3 @@ EBoolean returns boolean:
 VariableRef returns VariableRef:
     variableName=ID
 ;
-
