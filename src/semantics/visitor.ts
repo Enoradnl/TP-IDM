@@ -1,5 +1,5 @@
 import * as ASTInterfaces from '../language/generated/ast.js';
-import { AstNode, CstNode, LangiumDocument, Reference } from 'langium';
+import { AstNode, CstNode, LangiumDocument } from 'langium'; //Reference
 
 export interface Visitor{
     visitRoboML(node : RoboML) : any;

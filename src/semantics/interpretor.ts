@@ -1,6 +1,10 @@
 import { Assignment, Condition, Direction, Expression, Fonction, FunctionCall, Loop, Movement, Param, Primaire, ReturnInstruction, RoboML, Rotation, Sensors, Statement, Type, Units, Value, Variable, VariableRef, Visitor } from "./visitor.js";
+import { BaseScene } from '../web/simulator/scene.js';
 
 export default class Interpretor implements Visitor{
+
+    public scene:BaseScene = new BaseScene;
+
     visitRoboML(node: RoboML) {
         throw new Error("Method not implemented.");
     }
