@@ -8,30 +8,39 @@ MonacoEditorLanguageClientWrapper.addMonacoStyles('monaco-editor-styles');
 
 const client = new MonacoEditorLanguageClientWrapper();
 const editorConfig = client.getEditorConfig();
-editorConfig.setMainLanguageId('robo-ml');       
+editorConfig.setMainLanguageId('robo-ml');
 // WARNING Dependent of your project
 
 editorConfig.setMonarchTokensProvider(monarchSyntax);
 
-let code = `let void entry () {
-    var number count = 0
-    loop count < 5
-    {	
-        setSpeed(500 * (count + 1))
-        count = count + 1
-        square(count)
-    }
-}
+// let code = `let void entry () {
+//     var number count = 0
+//     loop count < 5
+//     {	
+//         setSpeed(500 * (count + 1))
+//         count = count + 1
+//         square(count)
+//     }
+// }
 
-let void square(number factor){
-    Forward 500 * factor
-    Clock 90
-    Forward 500 * factor
-    Clock 90
-    Forward 500 * factor
-    Clock 90
-    Forward 500 * factor
-    Clock 90
+// let void square(number factor){
+//     Forward 500 * factor
+//     Clock 90
+//     Forward 500 * factor
+//     Clock 90
+//     Forward 500 * factor
+//     Clock 90
+//     Forward 500 * factor
+//     Clock 90
+// }`
+
+
+
+let code = `var var1 = 9
+let void test(){
+
+var var1 = 9
+return var1
 }`
 
 editorConfig.setMainCode(code);
@@ -59,20 +68,20 @@ var errorModal = document.getElementById("errorModal");
 var validModal = document.getElementById("validModal");
 var closeError = document.querySelector("#errorModal .close");
 var closeValid = document.querySelector("#validModal .close");
-closeError.onclick = function() {
+closeError.onclick = function () {
     errorModal.style.display = "none";
 }
-closeValid.onclick = function() {
+closeValid.onclick = function () {
     validModal.style.display = "none";
 }
-window.onclick = function(event) {
+window.onclick = function (event) {
     if (event.target == validModal) {
         validModal.style.display = "none";
     }
     if (event.target == errorModal) {
         errorModal.style.display = "none";
     }
-} 
+}
 
 const generateAndDisplay = (async () => {
     console.info('generating & running current code...');
@@ -98,19 +107,19 @@ const setupSimulator = (scene) => {
     scene.entities.forEach((entity) => {
         if (entity.type === "Wall") {
             window.entities.push(new Wall(
-                (entity.pos.x)*factor,
-                (entity.pos.y)*factor,
-                (entity.size.x)*factor,
-                (entity.size.y)*factor
-                ));
+                (entity.pos.x) * factor,
+                (entity.pos.y) * factor,
+                (entity.size.x) * factor,
+                (entity.size.y) * factor
+            ));
         }
         if (entity.type === "Block") {
             window.entities.push(new Wall(
-                (entity.pos.x)*factor,
-                (entity.pos.y)*factor,
-                (entity.size.x)*factor,
-                (entity.size.y)*factor
-                ));
+                (entity.pos.x) * factor,
+                (entity.pos.y) * factor,
+                (entity.size.x) * factor,
+                (entity.size.y) * factor
+            ));
         }
     });
 
@@ -133,8 +142,8 @@ const typecheck = (async () => {
     console.info('typechecking current code...');
 
     // BONUS : Implement new semantics for typechecking
-    
-    if(errors.length > 0){
+
+    if (errors.length > 0) {
         const modal = document.getElementById("errorModal");
         modal.style.display = "block";
     } else {
@@ -146,8 +155,29 @@ const typecheck = (async () => {
 const execute = (async () => {
     console.info('running current code...');
     // TODO : implement
+    client.getLanguageClient().sendNotification('browser/execute', {
+        content: client.getEditor().getModel().getValue(),
+        uri: client.getEditor().getModel().uri.toString()
+    });
 });
 
 window.parseAndValidate = parseAndValidate;
 window.typecheck = typecheck;
 window.execute = execute;
+
+client.getLanguageClient().onNotification('browser/sendStatements', async (params) => {
+    // running = true;
+    // stopping = false;
+    // pausing = false;
+    // document.getElementById("btplay").innerHTML = '<i class="text-orange-300 fa-solid fa-rotate-right hover:animate-spin"></i>';
+    runStatments(params);
+});
+
+async function runStatments(params) {
+    for (let i = 0; i < params.length; i++) {
+        const statement = params[i];
+        if (statement.type === "Forward") {
+            await window.p5robot.move(statement.Value);
+        }
+    }
+}

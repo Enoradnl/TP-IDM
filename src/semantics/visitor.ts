@@ -52,8 +52,8 @@ export class RoboML implements ASTInterfaces.RoboML {
     // simply copy-paste the interface fields as public parameters
     // you can find them in generated/ast.ts
     constructor(readonly $type: 'RoboML', fonction: Array<Fonction>, variable: Array<Variable>){}
-    function!: Fonction[];
-    variable!: Variable[];
+    public function!: Fonction[];
+    public variable!: Variable[];
     $container?: AstNode | undefined;
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
@@ -145,7 +145,7 @@ export class Variable implements ASTInterfaces.Variable {
     // simply copy-paste the interface fields as public parameters
     // you can find them in generated/ast.ts
     constructor($container: RoboML,
-        readonly $type: 'Variable',
+        public $type: 'Variable',
         expression: Expression,
         varName: string){}
     $container!: ASTInterfaces.RoboML;
@@ -155,7 +155,7 @@ export class Variable implements ASTInterfaces.Variable {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    public accept(visitor: Visitor) : any {};
 }
 
 export type Type = Type_Boolean | Type_Char | Type_Double | Type_Float | Type_Int | Type_String;

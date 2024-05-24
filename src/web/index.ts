@@ -2,7 +2,7 @@ import { AstNode, LangiumServices } from "langium";
 import { URI } from "vscode-uri";
 import { EmptyFileSystem } from "langium";
 import { RoboML } from '../semantics/visitor.js';
-import Interpretor from "../semantics/interpretor.js";
+import Interpretor from "../semantics/interpretorVisitor.js";
 import { createRoboMlServices } from "../language/robo-ml-module.js";
 
 /**
