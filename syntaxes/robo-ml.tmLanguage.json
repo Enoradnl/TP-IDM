@@ -1,0 +1,61 @@
+{
+  "name": "robo-ml",
+  "scopeName": "source.robo-ml",
+  "fileTypes": [
+    ".robo"
+  ],
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "name": "keyword.control.robo-ml",
+      "match": "\\b(Backward|Boolean|Char|Double|Float|Forward|Int|Left|Movement|Right|Rotation|Sensors|String|cm|distance|dm|false|if|let|loop|m|mm|return|time|true|var|void)\\b"
+    },
+    {
+      "name": "string.quoted.double.robo-ml",
+      "begin": "\"",
+      "end": "'",
+      "patterns": [
+        {
+          "include": "#string-character-escape"
+        }
+      ]
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.block.robo-ml",
+          "begin": "/\\*",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.robo-ml"
+            }
+          },
+          "end": "\\*/",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.comment.robo-ml"
+            }
+          }
+        },
+        {
+          "begin": "//\n\r",
+          "beginCaptures": {
+            "1": {
+              "name": "punctuation.whitespace.comment.leading.robo-ml"
+            }
+          },
+          "end": "(?=$)",
+          "name": "comment.line.robo-ml"
+        }
+      ]
+    },
+    "string-character-escape": {
+      "name": "constant.character.escape.robo-ml",
+      "match": "\\\\(x[0-9A-Fa-f]{2}|u[0-9A-Fa-f]{4}|u\\{[0-9A-Fa-f]+\\}|[0-2][0-7]{0,2}|3[0-6][0-7]?|37[0-7]?|[4-7][0-7]?|.|$)"
+    }
+  }
+}
