@@ -52,14 +52,16 @@ export class RoboML implements ASTInterfaces.RoboML {
     // simply copy-paste the interface fields as public parameters
     // you can find them in generated/ast.ts
     constructor(readonly $type: 'RoboML', fonction: Array<Fonction>, variable: Array<Variable>){}
-    public function!: Fonction[];
-    public variable!: Variable[];
+    function!: Fonction[];
+    variable!: Variable[];
     $container?: AstNode | undefined;
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitRoboML(this);
+    }
 }
 
 export class Statement implements ASTInterfaces.Statement {
@@ -67,7 +69,9 @@ export class Statement implements ASTInterfaces.Statement {
     // simply copy-paste the interface fields as public parameters
     // you can find them in generated/ast.ts
     constructor(readonly $type: 'Assignment' | 'Condition' | 'FunctionCall' | 'Loop' | 'Movement' | 'ReturnInstruction' | 'Rotation' | 'Sensors' | 'Statement' | 'Variable'){}
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitStatement(this);
+    }
 }
 
 export class Expression implements ASTInterfaces.Expression {
@@ -75,7 +79,9 @@ export class Expression implements ASTInterfaces.Expression {
     // simply copy-paste the interface fields as public parameters
     // you can find them in generated/ast.ts
     constructor(readonly $type: 'ArithmeticExpression' | 'BooleanExpression' | 'Expression' | 'Value'){}
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitExpression(this);
+    }
 }
 
 export type Exp1 = Exp2;
@@ -115,7 +121,9 @@ export class Value implements ASTInterfaces.Value {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitValue(this);
+    }
 }
 
 export class Fonction implements ASTInterfaces.Fonction {
@@ -137,7 +145,9 @@ export class Fonction implements ASTInterfaces.Fonction {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitFonction(this);
+    }
 }
 
 export class Variable implements ASTInterfaces.Variable {
@@ -145,7 +155,7 @@ export class Variable implements ASTInterfaces.Variable {
     // simply copy-paste the interface fields as public parameters
     // you can find them in generated/ast.ts
     constructor($container: RoboML,
-        public $type: 'Variable',
+        readonly $type: 'Variable',
         expression: Expression,
         varName: string){}
     $container!: ASTInterfaces.RoboML;
@@ -155,7 +165,9 @@ export class Variable implements ASTInterfaces.Variable {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    public accept(visitor: Visitor) : any {};
+    accept(visitor: Visitor) : Variable {
+        return visitor.visitVariable(this);
+    }
 }
 
 export type Type = Type_Boolean | Type_Char | Type_Double | Type_Float | Type_Int | Type_String;
@@ -189,7 +201,9 @@ export class Param implements ASTInterfaces.Param {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitParam(this);
+    }
 }
 
 export class Movement implements ASTInterfaces.Movement {
@@ -208,7 +222,9 @@ export class Movement implements ASTInterfaces.Movement {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitMovement(this);
+    }
 }
 
 export class Rotation implements ASTInterfaces.Rotation {
@@ -223,7 +239,9 @@ export class Rotation implements ASTInterfaces.Rotation {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitRotation(this);
+    }
 }
 
 export class Sensors implements ASTInterfaces.Sensors {
@@ -233,7 +251,9 @@ export class Sensors implements ASTInterfaces.Sensors {
     constructor(readonly $type: 'Sensors',
     distance?: Float,
     time?: Float){}
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitSensors(this);
+    }
 }
 
 export class Loop implements ASTInterfaces.Loop {
@@ -250,7 +270,9 @@ export class Loop implements ASTInterfaces.Loop {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitLoop(this);
+    }
 }
 
 export class Condition implements ASTInterfaces.Condition {
@@ -267,7 +289,9 @@ export class Condition implements ASTInterfaces.Condition {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitCondition(this);
+    }
 }
 
 export class Assignment implements ASTInterfaces.Assignment {
@@ -284,7 +308,9 @@ export class Assignment implements ASTInterfaces.Assignment {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitAssignment(this);
+    }
 }
 
 export class FunctionCall implements ASTInterfaces.FunctionCall {
@@ -301,7 +327,9 @@ export class FunctionCall implements ASTInterfaces.FunctionCall {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitFunctionCall(this);
+    }
 }
 
 export class ReturnInstruction implements ASTInterfaces.ReturnInstruction {
@@ -316,7 +344,9 @@ export class ReturnInstruction implements ASTInterfaces.ReturnInstruction {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitReturnInstruction(this);
+    }
 }
 
 export type Direction = Direction_Backward | Direction_Forward | Direction_Left | Direction_Right;
@@ -360,6 +390,8 @@ export class VariableRef implements ASTInterfaces.VariableRef {
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {}
+    accept(visitor: Visitor) : any {
+        return visitor.visitVariableRef(this);
+    }
 }
 

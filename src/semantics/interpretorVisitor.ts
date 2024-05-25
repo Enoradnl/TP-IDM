@@ -19,7 +19,9 @@ export default class interpretorVisitor implements Visitor{
         console.log(Object.getPrototypeOf(node.variable[0]));
         // node.accept(this);
         console.log(node.variable[0]);
-        node.variable[0].accept(this);
+        console.log(node.variable.length);
+        console.log(typeof node.variable[0]);
+        
         
         // for (const variable of node.variable){
         //     variable.accept(this);
@@ -63,6 +65,9 @@ export default class interpretorVisitor implements Visitor{
         var varName:string = node.varName;
         var expression:any = node.expression;
         console.log(varName + "=" + expression);
+        let value = node.accept(this);
+        
+        return value;
         // throw new Error("Method not implemented.");
     }
     visitType(node: Type) {
