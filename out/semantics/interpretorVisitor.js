@@ -52,39 +52,70 @@ export default class interpretorVisitor {
         throw new Error("Method not implemented.");
     }
     visitExpression(node) {
+        node.accept = function (visitor) { return visitor.visitExp1(node.left); };
+        var left = node.accept(this);
+        node.accept = function (visitor) { return visitor.visitExp1(node.right); };
+        var right = node.accept(this);
         if (node.right != null) {
-            return node.left.accept(this) || node.right.accept(this);
+            return left || right;
         }
         else if (node.left != null) {
-            return node.left.accept(this);
+            return left;
         }
         else {
             throw new Error("Aucun Expr n'est valide");
         }
     }
     visitExp1(node) {
+        console.log("EXXXXXXXXXXXPPPPPPPPPPPPPPPPPPPPPPPPPPPPP1");
+        node.accept = function (visitor) { return visitor.visitExp2(node.left); };
+        var left = node.accept(this);
+        node.accept = function (visitor) { return visitor.visitExp2(node.right); };
+        var right = node.accept(this);
         if (node.right != null) {
-            return node.left.accept(this) && node.right.accept(this);
+            return left && right;
         }
         else if (node.left != null) {
-            return node.left.accept(this);
+            return left;
         }
         else {
             throw new Error("Aucun Exp1 n'est valide");
         }
     }
     visitExp2(node) {
-        if (node.left != null) {
-            return !node.left.accept(this);
-        }
-        else if (node.right != null) {
-            return node.left.accept(this);
+        console.log("LE vrai exp2");
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp2((node.left as Exp2)); };
+        // var left = node.accept(this);
+        node.accept = function (visitor) { return visitor.visitExp3(node.right); };
+        var right = node.accept(this);
+        // if( node.left != null ){
+        //     console.log("nan ?");
+        //     return !left;
+        // }else 
+        if (node.right != null) {
+            console.log("whut");
+            return right;
         }
         else {
             throw new Error("Aucun Exp2 n'est valide");
         }
     }
     visitExp3(node) {
+        console.log("EXXXXXXXXXXXPPPPPPPPPPPPPPPPPPPPPPPPPPPPP3");
+        node.accept = function (visitor) { return visitor.visitExp4(node.left); };
+        var left = node.accept(this);
+        node.accept = function (visitor) { return visitor.visitExp4(node.equal); };
+        // var equal = node.accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.different as Exp4)); };
+        // var different = node.accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.sup as Exp4)); };
+        // var sup = node.accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.supEqual as Exp4)); };
+        // var supEqual = node.accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.inf as Exp4)); };
+        // var inf = node.accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.infEqual as Exp4)); };
+        // var infEqual = node.accept(this);
         if (node.equal != null) {
             return node.left.accept(this) == node.equal.accept(this);
         }
@@ -104,13 +135,16 @@ export default class interpretorVisitor {
             return node.left.accept(this) <= node.infEqual.accept(this);
         }
         else if (node.left != null) {
-            return node.left.accept(this);
+            return left;
         }
         else {
             throw new Error("Aucun Exp3 n'est valide");
         }
     }
     visitExp4(node) {
+        console.log("EXXXXXXXXXXXPPPPPPPPPPPPPPPPPPPPPPPPPPPPP4");
+        node.accept = function (visitor) { return visitor.visitExp5(node.left); };
+        var left = node.accept(this);
         if (node.addition != null) {
             return parseInt(node.addition.accept(this)) * parseInt(node.addition.accept(this));
         }
@@ -118,13 +152,16 @@ export default class interpretorVisitor {
             return parseInt(node.subtraction.accept(this)) * parseInt(node.subtraction.accept(this));
         }
         else if (node.left != null) {
-            return parseInt(node.left.accept(this));
+            return parseInt(left);
         }
         else {
             throw new Error("Aucun Exp4 n'est valide");
         }
     }
     visitExp5(node) {
+        console.log("EXXXXXXXXXXXPPPPPPPPPPPPPPPPPPPPPPPPPPPPP5");
+        node.accept = function (visitor) { return visitor.visitPrimaire(node.left); };
+        var left = node.accept(this);
         if (node.multiplication != null) {
             return parseInt(node.left.accept(this)) * parseInt(node.multiplication.accept(this));
         }
@@ -132,21 +169,28 @@ export default class interpretorVisitor {
             return parseInt(node.left.accept(this)) * parseInt(node.division.accept(this));
         }
         else if (node.left != null) {
-            return parseInt(node.left.accept(this));
+            return parseInt(left);
         }
         else {
             throw new Error("Aucun Exp5 n'est valide");
         }
     }
     visitPrimaire(node) {
+        console.log("PRRRRRRRRRRIIIIIIIIIIIIIMMMMMMMMMMMAIIIIIIIIIIIIIIIRRRRRRRRRRRRREEEEEEEEEEEEEEE");
+        node.accept = function (visitor) { return visitor.visitValue(node.value); };
+        var value = node.accept(this);
+        node.accept = function (visitor) { return visitor.visitExpression(node.expression); };
+        var expression = node.accept(this);
         if (node.value != null) {
-            return node.value.accept(this);
+            console.log("value");
+            return value;
         }
         else if (node.varName != null) {
             return node.varName;
         }
         else if (node.expression != null) {
-            return node.expression.accept(this);
+            console.log("expression");
+            return expression;
         }
         else {
             throw new Error("Aucun Primaire n'est valide");

@@ -18,7 +18,6 @@ export default class interpretorVisitor implements Visitor {
         console.log("visitRoboML()");
 
         for (const v of node.variable) {
-            console.log("coucou je suis la variable " + v.varName);
             v.accept = function (visitor: Visitor) { return visitor.visitVariable(v); };
             try {
                 v.accept(this);
@@ -28,7 +27,6 @@ export default class interpretorVisitor implements Visitor {
         }
 
         for ( const f of node.function ) {
-            console.log("coucou je suis la fonction " + f.functionName );
             f.accept = function (visitor: Visitor) { return visitor.visitFonction(f); };
             try {
                 f.accept(this);
@@ -58,36 +56,64 @@ export default class interpretorVisitor implements Visitor {
         throw new Error("Method not implemented.");
     }
     visitExpression(node: Expression) {
+        node.accept = function (visitor: Visitor) { return visitor.visitExp1((node.left as Exp1)); };
+        var left = node.accept(this);
+        node.accept = function (visitor: Visitor) { return visitor.visitExp1((node.right as Exp1)); };
+        var right = node.accept(this);
         if( node.right != null ){
-            return (node.left as Exp1).accept(this) || (node.right as Exp1).accept(this);
+            return left || right;
         }
         else if ( node.left != null ){
-            return (node.left as Exp1).accept(this);
+            return left;
         }else{
             throw new Error("Aucun Expr n'est valide");
         }
     }
     visitExp1(node: Exp1) {
+        node.accept = function (visitor: Visitor) { return visitor.visitExp2((node.left as Exp2)); };
+        var left = node.accept(this);
+        node.accept = function (visitor: Visitor) { return visitor.visitExp2((node.right as Exp2)); };
+        var right = node.accept(this);
         if( node.right != null ){
-            return (node.left as Exp2).accept(this) && (node.right as Exp2).accept(this);
+            return left && right;
         }
         else if ( node.left != null ){
-            return (node.left as Exp2).accept(this);
+            return left;
         }else{
             throw new Error("Aucun Exp1 n'est valide");
         }
     }
     visitExp2(node: Exp2) {
-        if( node.left != null ){
-            return !(node.left as Exp2).accept(this);
-        }
-        else if ( node.right != null ){
-            return (node.left as Exp3).accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp2((node.left as Exp2)); };
+        // var left = node.accept(this);
+        node.accept = function (visitor: Visitor) { return visitor.visitExp3((node.right as Exp3)); };
+        var right = node.accept(this);
+        // if( node.left != null ){
+        //     console.log("nan ?");
+        //     return !left;
+        // }else 
+        if ( node.right != null ){
+            return right;
         }else{
             throw new Error("Aucun Exp2 n'est valide");
         }
     }
     visitExp3(node: Exp3) {
+        node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.left as Exp4)); };
+        var left = node.accept(this);
+        node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.equal as Exp4)); };
+        // var equal = node.accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.different as Exp4)); };
+        // var different = node.accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.sup as Exp4)); };
+        // var sup = node.accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.supEqual as Exp4)); };
+        // var supEqual = node.accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.inf as Exp4)); };
+        // var inf = node.accept(this);
+        // node.accept = function (visitor: Visitor) { return visitor.visitExp4((node.infEqual as Exp4)); };
+        // var infEqual = node.accept(this);
+
         if( node.equal != null ){
             return (node.left as Exp4).accept(this) == (node.equal as Exp4).accept(this);
         }
@@ -107,13 +133,15 @@ export default class interpretorVisitor implements Visitor {
             return (node.left as Exp4).accept(this) <= (node.infEqual as Exp4).accept(this);
         }
         else if( node.left != null ){
-            return (node.left as Exp4).accept(this);
+            return left;
         }
         else{
             throw new Error("Aucun Exp3 n'est valide");
         }    
     }
     visitExp4(node: Exp4) {
+        node.accept = function (visitor: Visitor) { return visitor.visitExp5((node.left as Exp5)); };
+        var left = node.accept(this);
         if( node.addition != null ){
             return parseInt((node.addition as Exp5).accept(this)) * parseInt((node.addition as Exp5).accept(this));
         }
@@ -121,13 +149,15 @@ export default class interpretorVisitor implements Visitor {
             return parseInt((node.subtraction as Exp5).accept(this)) * parseInt((node.subtraction as Exp5).accept(this));
         }
         else if ( node.left != null ){
-            return parseInt((node.left as Exp5).accept(this));
+            return parseInt(left);
         }
         else{
             throw new Error("Aucun Exp4 n'est valide");
         }
     }
     visitExp5(node: Exp5) {
+        node.accept = function (visitor: Visitor) { return visitor.visitPrimaire((node.left as Primaire)); };
+        var left = node.accept(this);
         if( node.multiplication != null ){
             return parseInt((node.left as Primaire).accept(this)) * parseInt((node.multiplication as Primaire).accept(this));
         }
@@ -135,21 +165,25 @@ export default class interpretorVisitor implements Visitor {
             return parseInt((node.left as Primaire).accept(this)) * parseInt((node.division as Primaire).accept(this));
         }
         else if ( node.left != null ){
-            return parseInt((node.left as Primaire).accept(this));
+            return parseInt(left);
         }
         else{
             throw new Error("Aucun Exp5 n'est valide");
         }
     }
     visitPrimaire(node: Primaire) {
+        node.accept = function (visitor: Visitor) { return visitor.visitValue((node.value as Value)); };
+        var value = node.accept(this);
+        node.accept = function (visitor: Visitor) { return visitor.visitExpression((node.expression as Expression)); };
+        var expression = node.accept(this);
         if( node.value != null ){
-            return (node.value as Value).accept(this);
+            return value;
         }
         else if ( node.varName != null ){
             return node.varName;
         }
         else if ( node.expression != null ){
-            return (node.expression as Expression).accept(this);
+            return expression;
         }
         else{
             throw new Error("Aucun Primaire n'est valide");

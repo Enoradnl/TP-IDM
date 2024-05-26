@@ -23,7 +23,6 @@ async function extractAstNodeFromString<T extends AstNode>(content: string, serv
 }
 
 connection.onNotification('browser/execute', async params => {
-    console.log("yazidou t trop bo");
 
     const doc = await extractAstNodeFromString(params.content,RoboMl);
     var parsevalue = doc.parseResult?.value as RoboML;
