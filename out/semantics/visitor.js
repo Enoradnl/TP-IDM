@@ -24,29 +24,85 @@ export class Expression {
     // the constructor must take all attribute of the implemented interface 
     // simply copy-paste the interface fields as public parameters
     // you can find them in generated/ast.ts
-    constructor($type) {
+    constructor($container, $type, left, right) {
+        this.$container = $container;
         this.$type = $type;
     }
-    accept(visitor) {
-        return visitor.visitExpression(this);
-    }
+    accept(visitor) { }
 }
-export const Exp1 = 'Exp1';
-export const Exp2 = 'Exp2';
-export const Exp3 = 'Exp3';
-export const Exp4 = 'Exp4';
-export const Exp5 = 'Exp5';
-export const Primaire = 'Primaire';
+export class Exp1 {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor($type, left, right) {
+        this.$type = $type;
+    }
+    accept(visitor) { }
+}
+export class Exp2 {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor($type, left, right) {
+        this.$type = $type;
+    }
+    accept(visitor) { }
+}
+export class Exp3 {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor($type, different, equal, inf, infEqual, 
+    // left: Exp4,
+    sup, supEqual) {
+        this.$type = $type;
+    }
+    accept(visitor) { }
+}
+export class Exp4 {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor($type, addition, left, subtraction) {
+        this.$type = $type;
+    }
+    accept(visitor) { }
+}
+export class Exp5 {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor($type, division, left, multiplication) {
+        this.$type = $type;
+    }
+    accept(visitor) { }
+}
+export class Primaire {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor($type, expression, value, varName) {
+        this.$type = $type;
+    }
+    accept(visitor) { }
+}
 export class Value {
     // the constructor must take all attribute of the implemented interface 
     // simply copy-paste the interface fields as public parameters
     // you can find them in generated/ast.ts
-    constructor($container, $type, type) {
+    constructor($type, boolean, number_, type) {
         this.$type = $type;
     }
-    accept(visitor) {
-        return visitor.visitValue(this);
+    accept(visitor) { }
+}
+export class Speed {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor($type, speed, unit) {
+        this.$type = $type;
     }
+    accept(visitor) { }
 }
 export class Fonction {
     // the constructor must take all attribute of the implemented interface 

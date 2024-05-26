@@ -20,34 +20,34 @@ Statement returns Statement:
 ;
 
 Expression returns Expression: 
-    {Expression} Exp1 ('||' Exp1)*
+    {Expression} left=Exp1 ('||' right=Exp1)*
 ;
   
-Exp1 : 
-    Exp2 ('&&'  Exp2)*
+Exp1 returns Exp1: 
+    left=Exp2 ('&&'  right=Exp2)*
 ;
   
-Exp2  : 
-    '!'Exp2 | Exp3  
+Exp2 returns Exp2 : 
+    '!'left=Exp2 | right=Exp3  
   ;
   
-Exp3  : Exp4 
-  ( '='   Exp4 | '<>'  Exp4 | '>'   Exp4| '>='  Exp4| '<'   Exp4  | '<='  Exp4)?
+Exp3 returns Exp3 : 
+    left=Exp4 ( '='   equal=Exp4 | '!='  different=Exp4 | '>'   sup=Exp4| '>='  supEqual=Exp4| '<'   inf=Exp4  | '<='  infEqual=Exp4)?
 ;
   
-Exp4  : 
-    Exp5 ( '+'   Exp5| '-'   Exp5)*
+Exp4 returns Exp4 : 
+    left=Exp5 ( '+'   addition=Exp5| '-'   subtraction=Exp5)*
 ;
   
-Exp5  : Primaire
-        ( '*'   Primaire
-        | '/'  Primaire 
+Exp5 returns Exp5 : left=Primaire
+        ( '*'   multiplication=Primaire
+        | '/'  division=Primaire 
         )*
   ;
   
-Primaire: Value
-  | ID
-  | '(' Expression ')'
+Primaire returns Primaire: value=Value
+  | varName=ID
+  | '(' expression=Expression ')'
   ;
 
 Fonction returns Fonction:
@@ -73,7 +73,7 @@ Type_Double returns Type_Double: 'Double' ;
 // ;
 
 Param returns Param:
-    {Param} ^type=Type name=EString  
+    {Param} ^type=Type name=STRING 
 ;
 
 Movement returns Movement:
@@ -108,9 +108,9 @@ ReturnInstruction returns ReturnInstruction:
     'return' (expression+=Expression)
 ;
 
-// Speed returns Speed:
-//     {Speed} 'Speed' '{' ('unit' unit=Units  )? ('arithmeticexpression' '{' arithmeticexpression+=ArithmeticExpression  ("," arithmeticexpression+=ArithmeticExpression  )* '}' )? '}'  
-// ;
+Speed returns Speed:
+    {Speed} 'Speed' speed=Expression unit=Units
+;
 
 Direction returns Direction:
     Direction_Forward | Direction_Backward | Direction_Left | Direction_Right
@@ -161,14 +161,18 @@ BooleanOperator_Xor returns BooleanOperator_Xor: 'Xor' ;
 // ;
 
 Value returns Value:
-    EBoolean | VariableRef | INT;
+    boolean=EBoolean | variableRef=VariableRef | number_=EInt;
 
-EString returns string:
-    STRING | ID 
+EInt returns number:
+    '-'? INT  
 ;
 
-EBoolean returns boolean:
-    'true' | 'false'
+// EString returns string:
+//     STRING | ID 
+// ;
+
+EBoolean returns EBoolean:
+    boolean='true' | boolean='false'
 ;
 
 VariableRef returns VariableRef:

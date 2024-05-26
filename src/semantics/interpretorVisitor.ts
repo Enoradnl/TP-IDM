@@ -1,11 +1,12 @@
-import { Assignment, Condition, Direction, Expression, Fonction, FunctionCall, Loop, Movement, Param, Primaire, ReturnInstruction, RoboML, Rotation, Sensors, Statement, Type, Units, Value, Variable, VariableRef, Visitor } from "./visitor.js";
+import { Assignment, Condition, Direction, Exp1, Exp2, Exp3, Exp4, Exp5, Expression, Fonction, FunctionCall, Loop, Movement, Param, Primaire, ReturnInstruction, RoboML, Rotation, Sensors, Speed, Statement, Type, Units, Value, Variable, VariableRef, Visitor } from "./visitor.js";
 import { BaseScene, Scene } from '../web/simulator/scene.js';
 // import { log } from "node:console";
 
-export default class interpretorVisitor implements Visitor{
+export default class interpretorVisitor implements Visitor {
 
     public scene!: Scene;
     public robotinstruction: any[] = [];
+    public variablesMap: Map<String, Expression> = new Map();
 
     visit(model: RoboML): any {
         this.scene = new BaseScene();
@@ -15,61 +16,160 @@ export default class interpretorVisitor implements Visitor{
 
     visitRoboML(node: RoboML) {
         console.log("visitRoboML()");
-        console.log(node.variable[0] instanceof Variable);
-        console.log(Object.getPrototypeOf(node.variable[0]));
-        // node.accept(this);
-        console.log(node.variable[0]);
-        console.log(node.variable.length);
-        console.log(typeof node.variable[0]);
-        
-        
-        // for (const variable of node.variable){
-        //     variable.accept(this);
-        // }
-        // var action = {type: "Forward", Value: 50};
-        // this.robotinstruction.push(action);
-        // throw new Error("Method not implemented.");
+
+        for (const v of node.variable) {
+            console.log("coucou je suis la variable " + v.varName);
+            v.accept = function (visitor: Visitor) { return visitor.visitVariable(v); };
+            try {
+                v.accept(this);
+            } catch(error) {
+                console.log(error);
+            }
+        }
+
+        for ( const f of node.function ) {
+            console.log("coucou je suis la fonction " + f.functionName );
+            f.accept = function (visitor: Visitor) { return visitor.visitFonction(f); };
+            try {
+                f.accept(this);
+            } catch(error) {
+                console.log(error);
+            }
+        }
     }
     visitStatement(node: Statement) {
+        node.accept = function (visitor: Visitor) { return visitor.visitStatement(node); };
+        return node.accept(this);
+    }
+    
+    visitFonction(node: Fonction) {
+        node.accept = function (visitor: Visitor) { return visitor.visitFonction(node); };
+        return node.accept(this);
+    }
+    visitVariable(node: Variable) {
+        node.accept = function (visitor: Visitor) { return visitor.visitExpression((node.expression as Expression)); };
+        var varName:string = node.varName;
+        var expression:any = node.accept(this);
+        this.variablesMap.set(varName, expression);
+        console.log(this.variablesMap);
+    }
+
+    visitSpeed(arg0: Speed): unknown {
         throw new Error("Method not implemented.");
     }
     visitExpression(node: Expression) {
-        throw new Error("Method not implemented.");
+        if( node.right != null ){
+            return (node.left as Exp1).accept(this) || (node.right as Exp1).accept(this);
+        }
+        else if ( node.left != null ){
+            return (node.left as Exp1).accept(this);
+        }else{
+            throw new Error("Aucun Expr n'est valide");
+        }
     }
-    visitExp1(node: Primaire) {
-        throw new Error("Method not implemented.");
+    visitExp1(node: Exp1) {
+        if( node.right != null ){
+            return (node.left as Exp2).accept(this) && (node.right as Exp2).accept(this);
+        }
+        else if ( node.left != null ){
+            return (node.left as Exp2).accept(this);
+        }else{
+            throw new Error("Aucun Exp1 n'est valide");
+        }
     }
-    visitExp2(node: Primaire) {
-        throw new Error("Method not implemented.");
+    visitExp2(node: Exp2) {
+        if( node.left != null ){
+            return !(node.left as Exp2).accept(this);
+        }
+        else if ( node.right != null ){
+            return (node.left as Exp3).accept(this);
+        }else{
+            throw new Error("Aucun Exp2 n'est valide");
+        }
     }
-    visitExp3(node: Primaire) {
-        throw new Error("Method not implemented.");
+    visitExp3(node: Exp3) {
+        if( node.equal != null ){
+            return (node.left as Exp4).accept(this) == (node.equal as Exp4).accept(this);
+        }
+        else if ( node.different != null ){
+            return (node.left as Exp4).accept(this) != (node.different as Exp4).accept(this);
+        }
+        else if ( node.sup != null ){
+            return (node.left as Exp4).accept(this) > (node.sup as Exp4).accept(this);
+        }
+        else if ( node.supEqual != null ){
+            return (node.left as Exp4).accept(this) >= (node.supEqual as Exp4).accept(this);
+        }
+        else if ( node.inf != null ){
+            return (node.left as Exp4).accept(this) < (node.inf as Exp4).accept(this);
+        }
+        else if ( node.infEqual != null ){
+            return (node.left as Exp4).accept(this) <= (node.infEqual as Exp4).accept(this);
+        }
+        else if( node.left != null ){
+            return (node.left as Exp4).accept(this);
+        }
+        else{
+            throw new Error("Aucun Exp3 n'est valide");
+        }    
     }
-    visitExp4(node: Primaire) {
-        throw new Error("Method not implemented.");
+    visitExp4(node: Exp4) {
+        if( node.addition != null ){
+            return parseInt((node.addition as Exp5).accept(this)) * parseInt((node.addition as Exp5).accept(this));
+        }
+        else if ( node.subtraction != null ){
+            return parseInt((node.subtraction as Exp5).accept(this)) * parseInt((node.subtraction as Exp5).accept(this));
+        }
+        else if ( node.left != null ){
+            return parseInt((node.left as Exp5).accept(this));
+        }
+        else{
+            throw new Error("Aucun Exp4 n'est valide");
+        }
     }
-    visitExp5(node: Primaire) {
-        throw new Error("Method not implemented.");
+    visitExp5(node: Exp5) {
+        if( node.multiplication != null ){
+            return parseInt((node.left as Primaire).accept(this)) * parseInt((node.multiplication as Primaire).accept(this));
+        }
+        else if ( node.division != null ){
+            return parseInt((node.left as Primaire).accept(this)) * parseInt((node.division as Primaire).accept(this));
+        }
+        else if ( node.left != null ){
+            return parseInt((node.left as Primaire).accept(this));
+        }
+        else{
+            throw new Error("Aucun Exp5 n'est valide");
+        }
     }
     visitPrimaire(node: Primaire) {
-        throw new Error("Method not implemented.");
+        if( node.value != null ){
+            return (node.value as Value).accept(this);
+        }
+        else if ( node.varName != null ){
+            return node.varName;
+        }
+        else if ( node.expression != null ){
+            return (node.expression as Expression).accept(this);
+        }
+        else{
+            throw new Error("Aucun Primaire n'est valide");
+        }
     }
     visitValue(node: Value) {
-        throw new Error("Method not implemented.");
+        if(node.boolean != null){
+            return node.boolean;
+        }
+        else if(node.variableRef != null){
+            return node.variableRef;
+        }
+        else if(node.number_ != null){
+            return node.number_;
+        }
+        else{
+            throw new Error("Aucune valeur n'est trouvée");
+        }
     }
-    visitFonction(node: Fonction) {
-        console.log("coucou");
-        throw new Error("Method not implemented.");
-    }
-    visitVariable(node: Variable) {
-        var varName:string = node.varName;
-        var expression:any = node.expression;
-        console.log(varName + "=" + expression);
-        let value = node.accept(this);
-        
-        return value;
-        // throw new Error("Method not implemented.");
-    }
+
     visitType(node: Type) {
         throw new Error("Method not implemented.");
     }
@@ -104,19 +204,24 @@ export default class interpretorVisitor implements Visitor{
         throw new Error("Method not implemented.");
     }
     visitLoop(node: Loop) {
-        throw new Error("Method not implemented.");
+        node.accept = function (visitor: Visitor) { return visitor.visitLoop(node); };
+        return node.accept(this);
     }
     visitCondition(node: Condition) {
-        throw new Error("Method not implemented.");
+        node.accept = function (visitor: Visitor) { return visitor.visitCondition(node); };
+        return node.accept(this);
     }
     visitAssignment(node: Assignment) {
-        throw new Error("Method not implemented.");
+        node.accept = function (visitor: Visitor) { return visitor.visitAssignment(node); };
+        return node.accept(this);
     }
     visitFunctionCall(node: FunctionCall) {
-        throw new Error("Method not implemented.");
+        node.accept = function (visitor: Visitor) { return visitor.visitFunctionCall(node); };
+        return node.accept(this);
     }
     visitReturnInstruction(node: ReturnInstruction) {
-        throw new Error("Method not implemented.");
+        node.accept = function (visitor: Visitor) { return visitor.visitReturnInstruction(node); };
+        return node.accept(this);
     }
     visitDirection(node: Direction) {
         throw new Error("Method not implemented.");
@@ -160,5 +265,4 @@ export default class interpretorVisitor implements Visitor{
     visitVariableRef(node: VariableRef) {
         throw new Error("Method not implemented.");
     }
-
 }

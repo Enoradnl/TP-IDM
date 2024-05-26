@@ -11,11 +11,16 @@ export const RoboMlTerminals = {
     SL_COMMENT: /(\/\/((?!(\n|\r))[\s\S]*?)(\r?\n)?)/,
     WS: /((( |	)|\r)|\n)+/,
 };
-export function isEBoolean(item) {
-    return typeof item === 'boolean';
+export function isEInt(item) {
+    return typeof item === 'number';
 }
-export function isEString(item) {
-    return (typeof item === 'string' && (/(("((\\([\s\S]))|((?!(\\|"))[\s\S]*?))*")|('((\\([\s\S]))|((?!(\\|'))[\s\S]*?))*'))/.test(item) || /(\^?(([a-z]|[A-Z])|_)((([a-z]|[A-Z])|_)|[0-9])*)/.test(item)));
+export const ArithmeticValue = 'ArithmeticValue';
+export function isArithmeticValue(item) {
+    return reflection.isInstance(item, ArithmeticValue);
+}
+export const EBoolean = 'EBoolean';
+export function isEBoolean(item) {
+    return reflection.isInstance(item, EBoolean);
 }
 export const Exp1 = 'Exp1';
 export function isExp1(item) {
@@ -37,18 +42,6 @@ export const Exp5 = 'Exp5';
 export function isExp5(item) {
     return reflection.isInstance(item, Exp5);
 }
-export const Primaire = 'Primaire';
-export function isPrimaire(item) {
-    return reflection.isInstance(item, Primaire);
-}
-export const ArithmeticValue = 'ArithmeticValue';
-export function isArithmeticValue(item) {
-    return reflection.isInstance(item, ArithmeticValue);
-}
-export const BooleanValue = 'BooleanValue';
-export function isBooleanValue(item) {
-    return reflection.isInstance(item, BooleanValue);
-}
 export const Expression = 'Expression';
 export function isExpression(item) {
     return reflection.isInstance(item, Expression);
@@ -60,6 +53,10 @@ export function isFonction(item) {
 export const Param = 'Param';
 export function isParam(item) {
     return reflection.isInstance(item, Param);
+}
+export const Primaire = 'Primaire';
+export function isPrimaire(item) {
+    return reflection.isInstance(item, Primaire);
 }
 export const RoboML = 'RoboML';
 export function isRoboML(item) {
@@ -73,21 +70,13 @@ export const Statement = 'Statement';
 export function isStatement(item) {
     return reflection.isInstance(item, Statement);
 }
-export const VariableRef = 'VariableRef';
-export function isVariableRef(item) {
-    return reflection.isInstance(item, VariableRef);
-}
-export const ArithmeticExpression = 'ArithmeticExpression';
-export function isArithmeticExpression(item) {
-    return reflection.isInstance(item, ArithmeticExpression);
-}
-export const BooleanExpression = 'BooleanExpression';
-export function isBooleanExpression(item) {
-    return reflection.isInstance(item, BooleanExpression);
-}
 export const Value = 'Value';
 export function isValue(item) {
     return reflection.isInstance(item, Value);
+}
+export const VariableRef = 'VariableRef';
+export function isVariableRef(item) {
+    return reflection.isInstance(item, VariableRef);
 }
 export const Assignment = 'Assignment';
 export function isAssignment(item) {
@@ -127,14 +116,10 @@ export function isVariable(item) {
 }
 export class RoboMlAstReflection extends AbstractAstReflection {
     getAllTypes() {
-        return ['ArithmeticExpression', 'ArithmeticValue', 'Assignment', 'BooleanExpression', 'BooleanValue', 'Condition', 'Exp1', 'Exp2', 'Exp3', 'Exp4', 'Exp5', 'Expression', 'Fonction', 'FunctionCall', 'Loop', 'Movement', 'Param', 'Primaire', 'ReturnInstruction', 'RoboML', 'Rotation', 'Sensors', 'Speed', 'Statement', 'Value', 'Variable', 'VariableRef'];
+        return ['ArithmeticValue', 'Assignment', 'Condition', 'EBoolean', 'Exp1', 'Exp2', 'Exp3', 'Exp4', 'Exp5', 'Expression', 'Fonction', 'FunctionCall', 'Loop', 'Movement', 'Param', 'Primaire', 'ReturnInstruction', 'RoboML', 'Rotation', 'Sensors', 'Speed', 'Statement', 'Value', 'Variable', 'VariableRef'];
     }
     computeIsSubtype(subtype, supertype) {
         switch (subtype) {
-            case ArithmeticExpression:
-            case BooleanExpression: {
-                return this.isSubtype(Expression, supertype);
-            }
             case Assignment:
             case Condition:
             case FunctionCall:
@@ -145,27 +130,6 @@ export class RoboMlAstReflection extends AbstractAstReflection {
             case Sensors:
             case Variable: {
                 return this.isSubtype(Statement, supertype);
-            }
-            case Exp2: {
-                return this.isSubtype(Exp1, supertype);
-            }
-            case Exp3: {
-                return this.isSubtype(Exp2, supertype);
-            }
-            case Exp4: {
-                return this.isSubtype(Exp3, supertype);
-            }
-            case Exp5: {
-                return this.isSubtype(Exp4, supertype);
-            }
-            case Expression: {
-                return this.isSubtype(Primaire, supertype);
-            }
-            case Primaire: {
-                return this.isSubtype(Exp5, supertype);
-            }
-            case Value: {
-                return this.isSubtype(Expression, supertype) || this.isSubtype(Primaire, supertype);
             }
             default: {
                 return false;
@@ -205,14 +169,6 @@ export class RoboMlAstReflection extends AbstractAstReflection {
                     mandatory: [
                         { name: 'function', type: 'array' },
                         { name: 'variable', type: 'array' }
-                    ]
-                };
-            }
-            case 'Speed': {
-                return {
-                    name: 'Speed',
-                    mandatory: [
-                        { name: 'arithmeticexpression', type: 'array' }
                     ]
                 };
             }

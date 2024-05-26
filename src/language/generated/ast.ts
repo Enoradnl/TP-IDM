@@ -62,67 +62,13 @@ export type Direction_Left = 'Left';
 
 export type Direction_Right = 'Right';
 
-export type EBoolean = boolean;
+export type EInt = number;
 
-export function isEBoolean(item: unknown): item is EBoolean {
-    return typeof item === 'boolean';
-}
-
-export type EString = string;
-
-export function isEString(item: unknown): item is EString {
-    return (typeof item === 'string' && (/(("((\\([\s\S]))|((?!(\\|"))[\s\S]*?))*")|('((\\([\s\S]))|((?!(\\|'))[\s\S]*?))*'))/.test(item) || /(\^?(([a-z]|[A-Z])|_)((([a-z]|[A-Z])|_)|[0-9])*)/.test(item)));
-}
-
-export type Exp1 = Exp2;
-
-export const Exp1 = 'Exp1';
-
-export function isExp1(item: unknown): item is Exp1 {
-    return reflection.isInstance(item, Exp1);
-}
-
-export type Exp2 = Exp3;
-
-export const Exp2 = 'Exp2';
-
-export function isExp2(item: unknown): item is Exp2 {
-    return reflection.isInstance(item, Exp2);
-}
-
-export type Exp3 = Exp4;
-
-export const Exp3 = 'Exp3';
-
-export function isExp3(item: unknown): item is Exp3 {
-    return reflection.isInstance(item, Exp3);
-}
-
-export type Exp4 = Exp5;
-
-export const Exp4 = 'Exp4';
-
-export function isExp4(item: unknown): item is Exp4 {
-    return reflection.isInstance(item, Exp4);
-}
-
-export type Exp5 = Primaire;
-
-export const Exp5 = 'Exp5';
-
-export function isExp5(item: unknown): item is Exp5 {
-    return reflection.isInstance(item, Exp5);
+export function isEInt(item: unknown): item is EInt {
+    return typeof item === 'number';
 }
 
 export type Float = string;
-
-export type Primaire = Expression | Value;
-
-export const Primaire = 'Primaire';
-
-export function isPrimaire(item: unknown): item is Primaire {
-    return reflection.isInstance(item, Primaire);
-}
 
 export type Type = Type_Boolean | Type_Char | Type_Double | Type_Float | Type_Int | Type_String;
 
@@ -149,7 +95,6 @@ export type Units_m = 'm';
 export type Units_mm = 'mm';
 
 export interface ArithmeticValue extends AstNode {
-    readonly $container: ArithmeticExpression;
     readonly $type: 'ArithmeticValue';
 }
 
@@ -159,19 +104,95 @@ export function isArithmeticValue(item: unknown): item is ArithmeticValue {
     return reflection.isInstance(item, ArithmeticValue);
 }
 
-export interface BooleanValue extends AstNode {
-    readonly $container: BooleanExpression;
-    readonly $type: 'BooleanValue';
+export interface EBoolean extends AstNode {
+    readonly $container: Value;
+    readonly $type: 'EBoolean';
+    boolean: string
 }
 
-export const BooleanValue = 'BooleanValue';
+export const EBoolean = 'EBoolean';
 
-export function isBooleanValue(item: unknown): item is BooleanValue {
-    return reflection.isInstance(item, BooleanValue);
+export function isEBoolean(item: unknown): item is EBoolean {
+    return reflection.isInstance(item, EBoolean);
+}
+
+export interface Exp1 extends AstNode {
+    readonly $container: Expression;
+    readonly $type: 'Exp1';
+    left: Exp2
+    right: Exp2
+}
+
+export const Exp1 = 'Exp1';
+
+export function isExp1(item: unknown): item is Exp1 {
+    return reflection.isInstance(item, Exp1);
+}
+
+export interface Exp2 extends AstNode {
+    readonly $container: Exp1 | Exp2;
+    readonly $type: 'Exp2';
+    left: Exp2
+    right: Exp3
+}
+
+export const Exp2 = 'Exp2';
+
+export function isExp2(item: unknown): item is Exp2 {
+    return reflection.isInstance(item, Exp2);
+}
+
+export interface Exp3 extends AstNode {
+    readonly $container: Exp2;
+    readonly $type: 'Exp3';
+    different?: Exp4
+    equal?: Exp4
+    inf?: Exp4
+    infEqual?: Exp4
+    left: Exp4
+    sup?: Exp4
+    supEqual?: Exp4
+}
+
+export const Exp3 = 'Exp3';
+
+export function isExp3(item: unknown): item is Exp3 {
+    return reflection.isInstance(item, Exp3);
+}
+
+export interface Exp4 extends AstNode {
+    readonly $container: Exp3;
+    readonly $type: 'Exp4';
+    addition: Exp5
+    left: Exp5
+    subtraction: Exp5
+}
+
+export const Exp4 = 'Exp4';
+
+export function isExp4(item: unknown): item is Exp4 {
+    return reflection.isInstance(item, Exp4);
+}
+
+export interface Exp5 extends AstNode {
+    readonly $container: Exp4;
+    readonly $type: 'Exp5';
+    division: Primaire
+    left: Primaire
+    multiplication: Primaire
+}
+
+export const Exp5 = 'Exp5';
+
+export function isExp5(item: unknown): item is Exp5 {
+    return reflection.isInstance(item, Exp5);
 }
 
 export interface Expression extends AstNode {
-    readonly $type: 'ArithmeticExpression' | 'BooleanExpression' | 'Expression' | 'Value';
+    readonly $container: Assignment | Condition | Loop | Param | Primaire | ReturnInstruction | Speed | Variable;
+    readonly $type: 'Expression';
+    left: Exp1
+    right: Exp1
 }
 
 export const Expression = 'Expression';
@@ -209,6 +230,20 @@ export function isParam(item: unknown): item is Param {
     return reflection.isInstance(item, Param);
 }
 
+export interface Primaire extends AstNode {
+    readonly $container: Exp5;
+    readonly $type: 'Primaire';
+    expression: Expression
+    value: Value
+    varName: string
+}
+
+export const Primaire = 'Primaire';
+
+export function isPrimaire(item: unknown): item is Primaire {
+    return reflection.isInstance(item, Primaire);
+}
+
 export interface RoboML extends AstNode {
     readonly $type: 'RoboML';
     function: Array<Fonction>
@@ -223,8 +258,8 @@ export function isRoboML(item: unknown): item is RoboML {
 
 export interface Speed extends AstNode {
     readonly $type: 'Speed';
-    arithmeticexpression: Array<ArithmeticExpression>
-    unit?: Units
+    speed: Expression
+    unit: Units
 }
 
 export const Speed = 'Speed';
@@ -243,8 +278,23 @@ export function isStatement(item: unknown): item is Statement {
     return reflection.isInstance(item, Statement);
 }
 
+export interface Value extends AstNode {
+    readonly $container: FunctionCall | Primaire;
+    readonly $type: 'Value';
+    boolean: EBoolean
+    number_: number
+    type?: Type
+    variableRef: VariableRef
+}
+
+export const Value = 'Value';
+
+export function isValue(item: unknown): item is Value {
+    return reflection.isInstance(item, Value);
+}
+
 export interface VariableRef extends AstNode {
-    readonly $container: Assignment;
+    readonly $container: Assignment | Value;
     readonly $type: 'VariableRef';
     variableName: string
 }
@@ -253,45 +303,6 @@ export const VariableRef = 'VariableRef';
 
 export function isVariableRef(item: unknown): item is VariableRef {
     return reflection.isInstance(item, VariableRef);
-}
-
-export interface ArithmeticExpression extends Expression {
-    readonly $container: Speed;
-    readonly $type: 'ArithmeticExpression';
-    arithmeticOperator?: ArithmeticOperator
-    left: ArithmeticValue
-    right: ArithmeticValue
-}
-
-export const ArithmeticExpression = 'ArithmeticExpression';
-
-export function isArithmeticExpression(item: unknown): item is ArithmeticExpression {
-    return reflection.isInstance(item, ArithmeticExpression);
-}
-
-export interface BooleanExpression extends Expression {
-    readonly $type: 'BooleanExpression';
-    booleanOperator?: BooleanOperator
-    left: BooleanValue
-    right: BooleanValue
-}
-
-export const BooleanExpression = 'BooleanExpression';
-
-export function isBooleanExpression(item: unknown): item is BooleanExpression {
-    return reflection.isInstance(item, BooleanExpression);
-}
-
-export interface Value extends Expression {
-    readonly $container: FunctionCall;
-    readonly $type: 'Value';
-    type?: Type
-}
-
-export const Value = 'Value';
-
-export function isValue(item: unknown): item is Value {
-    return reflection.isInstance(item, Value);
 }
 
 export interface Assignment extends Statement {
@@ -403,12 +414,10 @@ export function isVariable(item: unknown): item is Variable {
 }
 
 export type RoboMlAstType = {
-    ArithmeticExpression: ArithmeticExpression
     ArithmeticValue: ArithmeticValue
     Assignment: Assignment
-    BooleanExpression: BooleanExpression
-    BooleanValue: BooleanValue
     Condition: Condition
+    EBoolean: EBoolean
     Exp1: Exp1
     Exp2: Exp2
     Exp3: Exp3
@@ -435,15 +444,11 @@ export type RoboMlAstType = {
 export class RoboMlAstReflection extends AbstractAstReflection {
 
     getAllTypes(): string[] {
-        return ['ArithmeticExpression', 'ArithmeticValue', 'Assignment', 'BooleanExpression', 'BooleanValue', 'Condition', 'Exp1', 'Exp2', 'Exp3', 'Exp4', 'Exp5', 'Expression', 'Fonction', 'FunctionCall', 'Loop', 'Movement', 'Param', 'Primaire', 'ReturnInstruction', 'RoboML', 'Rotation', 'Sensors', 'Speed', 'Statement', 'Value', 'Variable', 'VariableRef'];
+        return ['ArithmeticValue', 'Assignment', 'Condition', 'EBoolean', 'Exp1', 'Exp2', 'Exp3', 'Exp4', 'Exp5', 'Expression', 'Fonction', 'FunctionCall', 'Loop', 'Movement', 'Param', 'Primaire', 'ReturnInstruction', 'RoboML', 'Rotation', 'Sensors', 'Speed', 'Statement', 'Value', 'Variable', 'VariableRef'];
     }
 
     protected override computeIsSubtype(subtype: string, supertype: string): boolean {
         switch (subtype) {
-            case ArithmeticExpression:
-            case BooleanExpression: {
-                return this.isSubtype(Expression, supertype);
-            }
             case Assignment:
             case Condition:
             case FunctionCall:
@@ -454,27 +459,6 @@ export class RoboMlAstReflection extends AbstractAstReflection {
             case Sensors:
             case Variable: {
                 return this.isSubtype(Statement, supertype);
-            }
-            case Exp2: {
-                return this.isSubtype(Exp1, supertype);
-            }
-            case Exp3: {
-                return this.isSubtype(Exp2, supertype);
-            }
-            case Exp4: {
-                return this.isSubtype(Exp3, supertype);
-            }
-            case Exp5: {
-                return this.isSubtype(Exp4, supertype);
-            }
-            case Expression: {
-                return this.isSubtype(Primaire, supertype);
-            }
-            case Primaire: {
-                return this.isSubtype(Exp5, supertype);
-            }
-            case Value: {
-                return this.isSubtype(Expression, supertype) || this.isSubtype(Primaire, supertype);
             }
             default: {
                 return false;
@@ -516,14 +500,6 @@ export class RoboMlAstReflection extends AbstractAstReflection {
                     mandatory: [
                         { name: 'function', type: 'array' },
                         { name: 'variable', type: 'array' }
-                    ]
-                };
-            }
-            case 'Speed': {
-                return {
-                    name: 'Speed',
-                    mandatory: [
-                        { name: 'arithmeticexpression', type: 'array' }
                     ]
                 };
             }

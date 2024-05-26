@@ -62,6 +62,46 @@ interface Param {
 }
 
 interface Expression {
+	left:Exp1
+	right:Exp1
+}
+
+interface Exp1{
+	left:Exp2
+	right:Exp2
+}
+
+interface Exp2{
+	left:Exp2
+	right:Exp3
+}
+
+interface Exp3{
+	left:Exp4
+	equal?:Exp4
+	different?:Exp4
+	sup?:Exp4
+	supEqual?:Exp4
+	inf?:Exp4
+	infEqual?:Exp4
+}
+
+interface Exp4{
+	left:Exp5
+	addition:Exp5
+	subtraction:Exp5
+}
+
+interface Exp5{
+	left:Primaire
+	multiplication:Primaire
+	division:Primaire
+}
+
+interface Primaire{
+	value:Value
+	varName:string
+	expression:Expression
 }
 
 interface Variable extends Statement {
@@ -69,11 +109,11 @@ interface Variable extends Statement {
 	expression: Expression
 }
 
-interface BooleanExpression extends Expression {
-	booleanOperator?: BooleanOperator
-	left: BooleanValue
-	right: BooleanValue
-}
+// interface BooleanExpression extends Expression {
+// 	booleanOperator?: BooleanOperator
+// 	left: BooleanValue
+// 	right: BooleanValue
+// }
 
 interface Movement extends Statement {
 	distance: number
@@ -82,15 +122,15 @@ interface Movement extends Statement {
 }
 
 interface Speed {
-	unit?: Units
-	arithmeticexpression: ArithmeticExpression[]
+	unit: Units
+	speed:Expression
 }
 
-interface ArithmeticExpression extends Expression {
-	arithmeticOperator?: ArithmeticOperator
-	left: ArithmeticValue
-	right: ArithmeticValue
-}
+// interface ArithmeticExpression extends Expression {
+// 	arithmeticOperator?: ArithmeticOperator
+// 	left: ArithmeticValue
+// 	right: ArithmeticValue
+// }
 
 interface Rotation extends Statement {
 	angle: number
@@ -125,16 +165,19 @@ interface ReturnInstruction extends Statement {
 	expression: Expression[]
 }
 
-interface Value extends Expression {
+interface Value {
 	^type?: Type
+	boolean: EBoolean
+	variableRef:VariableRef
+	number_:number
 }
 
 interface VariableRef {
 	variableName: string
 }
 
-interface BooleanValue{
-
+interface EBoolean{
+	boolean:string
 }
 
 interface ArithmeticValue{

@@ -52,7 +52,8 @@ export class RoboMlAcceptWeaver {
             // Float : this.weaveFloat,
             // EString : this.weaveEString,
             // EBoolean : this.weaveEBoolean,
-            VariableRef: this.weaveVariableRef
+            VariableRef: this.weaveVariableRef,
+            Speed: this.weaveSpeed
         };
     }
     weaveRoboML(node, accept) {
@@ -172,14 +173,17 @@ export class RoboMlAcceptWeaver {
     weaveFloat(node, accept) {
         node.accept = (visitor) => { return visitor.visitFloat(node); };
     }
-    weaveEString(node, accept) {
-        node.accept = (visitor) => { return visitor.visitEString(node); };
-    }
+    // weaveEString(node : InterfaceAST.EString, accept : ValidationAcceptor) : void {
+    //     (<any> node).accept = (visitor: Visitor) => { return visitor.visitEString(node as unknown as ClassAST.EString); }
+    // }
     weaveEBoolean(node, accept) {
         node.accept = (visitor) => { return visitor.visitEBoolean(node); };
     }
     weaveVariableRef(node, accept) {
         node.accept = (visitor) => { return visitor.visitVariableRef(node); };
+    }
+    weaveSpeed(node, accept) {
+        node.accept = (visitor) => { return visitor.visitSpeed(node); };
     }
 }
 //# sourceMappingURL=accept-weaver.js.map

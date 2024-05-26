@@ -4,9 +4,9 @@ export default {
         'Backward','Boolean','Char','Double','Float','Forward','Int','Left','Movement','Right','Rotation','Sensors','String','cm','distance','dm','false','if','let','loop','m','mm','return','time','true','var','void'
     ],
     operators: [
-        '!','&&','*','+',',','-','/','<','<=','<>','=','>','>=','||'
+        '!','!=','&&','*','+',',','-','/','<','<=','=','>','>=','||'
     ],
-    symbols: /!|&&|\(|\)|\*|\+|,|-|\/|<|<=|<>|=|>|>=|\{|\|\||\}/,
+    symbols: /!|!=|&&|\(|\)|\*|\+|,|-|\/|<|<=|=|>|>=|\{|\|\||\}/,
 
     tokenizer: {
         initial: [

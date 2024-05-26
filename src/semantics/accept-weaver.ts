@@ -1,3 +1,4 @@
+
 import type { ValidationAcceptor, ValidationChecks } from 'langium';
 import type { RoboMlAstType } from '../language/generated/ast.js';
 import * as InterfaceAST from '../language/generated/ast.js';
@@ -60,7 +61,8 @@ export class RoboMlAcceptWeaver {
 		// Float : this.weaveFloat,
 		// EString : this.weaveEString,
 		// EBoolean : this.weaveEBoolean,
-		VariableRef : this.weaveVariableRef
+		VariableRef : this.weaveVariableRef,
+		Speed : this.weaveSpeed
     };
 
     
@@ -220,9 +222,9 @@ weaveFloat(node : InterfaceAST.Float, accept : ValidationAcceptor) : void {
     (<any> node).accept = (visitor: Visitor) => { return visitor.visitFloat(node as unknown as ClassAST.Float); }
 }
 
-weaveEString(node : InterfaceAST.EString, accept : ValidationAcceptor) : void {
-    (<any> node).accept = (visitor: Visitor) => { return visitor.visitEString(node as unknown as ClassAST.EString); }
-}
+// weaveEString(node : InterfaceAST.EString, accept : ValidationAcceptor) : void {
+//     (<any> node).accept = (visitor: Visitor) => { return visitor.visitEString(node as unknown as ClassAST.EString); }
+// }
 
 weaveEBoolean(node : InterfaceAST.EBoolean, accept : ValidationAcceptor) : void {
     (<any> node).accept = (visitor: Visitor) => { return visitor.visitEBoolean(node as unknown as ClassAST.EBoolean); }
@@ -230,6 +232,10 @@ weaveEBoolean(node : InterfaceAST.EBoolean, accept : ValidationAcceptor) : void 
 
 weaveVariableRef(node : InterfaceAST.VariableRef, accept : ValidationAcceptor) : void {
     (<any> node).accept = (visitor: Visitor) => { return visitor.visitVariableRef(node as unknown as ClassAST.VariableRef); }
+}
+
+weaveSpeed(node : InterfaceAST.Speed, accept : ValidationAcceptor) : void {
+    (<any> node).accept = (visitor: Visitor) => { return visitor.visitSpeed(node as unknown as ClassAST.Speed); }
 }
 
 

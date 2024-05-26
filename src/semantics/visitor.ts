@@ -2,6 +2,7 @@ import * as ASTInterfaces from '../language/generated/ast.js';
 import { AstNode, CstNode, LangiumDocument } from 'langium'; //Reference
 
 export interface Visitor{
+    visitSpeed(arg0: Speed): unknown;
     visitRoboML(node : RoboML) : any;
 	visitStatement(node : Statement) : any;
 	visitExpression(node : Expression) : any;
@@ -78,52 +79,177 @@ export class Expression implements ASTInterfaces.Expression {
     // the constructor must take all attribute of the implemented interface 
     // simply copy-paste the interface fields as public parameters
     // you can find them in generated/ast.ts
-    constructor(readonly $type: 'ArithmeticExpression' | 'BooleanExpression' | 'Expression' | 'Value'){}
-    accept(visitor: Visitor) : any {
-        return visitor.visitExpression(this);
-    }
+    constructor(
+        readonly $container: Assignment | Condition | Loop | Param | Primaire | ReturnInstruction | Speed | Variable,
+        readonly $type: 'Expression',
+        left: Exp1,
+        right: Exp1){}
+    left!: ASTInterfaces.Exp1;
+    right!: ASTInterfaces.Exp1;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: Visitor) : any {}
 }
 
-export type Exp1 = Exp2;
+export class Exp1 implements ASTInterfaces.Exp1 {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor(
+        readonly $type: 'Exp1',
+        left: Exp2,
+        right: Exp2){}
+    $container!: ASTInterfaces.Expression;
+    left!: ASTInterfaces.Exp2;
+    right!: ASTInterfaces.Exp2;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: Visitor) : any {}
+}
 
-export const Exp1 = 'Exp1';
+export class Exp2 implements ASTInterfaces.Exp2 {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor(
+        readonly $type: 'Exp2',
+        left: Exp2,
+        right: Exp3){}
+    $container!: ASTInterfaces.Exp1 | ASTInterfaces.Exp2;
+    left!: ASTInterfaces.Exp2;
+    right!: ASTInterfaces.Exp3;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: Visitor) : any {}
+}
 
-export type Exp2 = Exp3;
+export class Exp3 implements ASTInterfaces.Exp3 {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor(readonly $type: 'Exp3',
+    different?: Exp4,
+    equal?: Exp4,
+    inf?: Exp4,
+    infEqual?: Exp4,
+    // left: Exp4,
+    sup?: Exp4,
+    supEqual?: Exp4){}
+    $container!: ASTInterfaces.Exp2;
+    different?: ASTInterfaces.Exp4 | undefined;
+    equal?: ASTInterfaces.Exp4 | undefined;
+    inf?: ASTInterfaces.Exp4 | undefined;
+    infEqual?: ASTInterfaces.Exp4 | undefined;
+    left!: ASTInterfaces.Exp4;
+    sup?: ASTInterfaces.Exp4 | undefined;
+    supEqual?: ASTInterfaces.Exp4 | undefined;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: Visitor) : any {}
+}
 
-export const Exp2 = 'Exp2'
+export class Exp4 implements ASTInterfaces.Exp4 {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor(readonly $type: 'Exp4',
+    addition: Exp5,
+    left: Exp5,
+    subtraction: Exp5){}
+    addition!: ASTInterfaces.Exp5;
+    left!: ASTInterfaces.Exp5;
+    subtraction!: ASTInterfaces.Exp5;
+    $container!: ASTInterfaces.Exp3;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: Visitor) : any {}
+}
 
-export type Exp3 = Exp4;
+export class Exp5 implements ASTInterfaces.Exp5 {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor(
+        readonly $type: 'Exp5',
+        division: Primaire,
+    left: Primaire,
+    multiplication: Primaire){}
+    division!: ASTInterfaces.Primaire;
+    multiplication!: ASTInterfaces.Primaire;
+    $container!: ASTInterfaces.Exp4;
+    left!: ASTInterfaces.Primaire;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: Visitor) : any {}
+}
 
-export const Exp3 = 'Exp3';
-
-export type Exp4 = Exp5;
-
-export const Exp4 = 'Exp4';
-
-export type Exp5 = Primaire;
-
-export const Exp5 = 'Exp5';
-
-export type Primaire = Expression | Value;
-
-export const Primaire = 'Primaire';
+export class Primaire implements ASTInterfaces.Primaire {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor(
+        readonly $type: 'Primaire',
+        expression: Expression,
+        value: Value,
+        varName: string){}
+    $container!: ASTInterfaces.Exp5;
+    expression!: ASTInterfaces.Expression;
+    value!: ASTInterfaces.Value;
+    varName!: string;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: Visitor) : any {}
+}
 
 export class Value implements ASTInterfaces.Value {
     // the constructor must take all attribute of the implemented interface 
     // simply copy-paste the interface fields as public parameters
     // you can find them in generated/ast.ts
-    constructor($container: FunctionCall,
-        readonly $type: 'Value',
-        type?: Type){}
-    $container!: ASTInterfaces.FunctionCall;
+    constructor(readonly $type: 'Value',
+    boolean: EBoolean,
+    number_: number,
+    type?: Type){}
+    $container!: FunctionCall | Primaire;
+    boolean!: ASTInterfaces.EBoolean;
+    number_!: number;
+    variableRef!: ASTInterfaces.VariableRef;
     type?: ASTInterfaces.Type | undefined;
     $containerProperty?: string | undefined;
     $containerIndex?: number | undefined;
     $cstNode?: CstNode | undefined;
     $document?: LangiumDocument<AstNode> | undefined;
-    accept(visitor: Visitor) : any {
-        return visitor.visitValue(this);
-    }
+    accept(visitor: Visitor) : any {}
+}
+
+export class Speed implements ASTInterfaces.Speed {
+    // the constructor must take all attribute of the implemented interface 
+    // simply copy-paste the interface fields as public parameters
+    // you can find them in generated/ast.ts
+    constructor(readonly $type: 'Speed',
+    speed: Expression,
+    unit: Units){}
+    speed!: ASTInterfaces.Expression;
+    unit!: ASTInterfaces.Units;
+    $container?: AstNode | undefined;
+    $containerProperty?: string | undefined;
+    $containerIndex?: number | undefined;
+    $cstNode?: CstNode | undefined;
+    $document?: LangiumDocument<AstNode> | undefined;
+    accept(visitor: Visitor) : any {}
 }
 
 export class Fonction implements ASTInterfaces.Fonction {

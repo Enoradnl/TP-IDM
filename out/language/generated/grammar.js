@@ -157,11 +157,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@3"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "left",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@3"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Group",
@@ -171,11 +176,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                 "value": "||"
               },
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@3"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "right",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@3"
+                  },
+                  "arguments": []
+                }
               }
             ],
             "cardinality": "*"
@@ -192,15 +202,23 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     {
       "$type": "ParserRule",
       "name": "Exp1",
+      "returnType": {
+        "$ref": "#/interfaces@5"
+      },
       "definition": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@4"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "left",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@4"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Group",
@@ -210,11 +228,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                 "value": "&&"
               },
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@4"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "right",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@4"
+                  },
+                  "arguments": []
+                }
               }
             ],
             "cardinality": "*"
@@ -231,6 +254,9 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     {
       "$type": "ParserRule",
       "name": "Exp2",
+      "returnType": {
+        "$ref": "#/interfaces@6"
+      },
       "definition": {
         "$type": "Alternatives",
         "elements": [
@@ -242,20 +268,30 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                 "value": "!"
               },
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@4"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "left",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@4"
+                  },
+                  "arguments": []
+                }
               }
             ]
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@5"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "right",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@5"
+              },
+              "arguments": []
+            }
           }
         ]
       },
@@ -269,15 +305,23 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     {
       "$type": "ParserRule",
       "name": "Exp3",
+      "returnType": {
+        "$ref": "#/interfaces@7"
+      },
       "definition": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@6"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "left",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@6"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Alternatives",
@@ -290,11 +334,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                     "value": "="
                   },
                   {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@6"
-                    },
-                    "arguments": []
+                    "$type": "Assignment",
+                    "feature": "equal",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@6"
+                      },
+                      "arguments": []
+                    }
                   }
                 ]
               },
@@ -303,14 +352,19 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                 "elements": [
                   {
                     "$type": "Keyword",
-                    "value": "<>"
+                    "value": "!="
                   },
                   {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@6"
-                    },
-                    "arguments": []
+                    "$type": "Assignment",
+                    "feature": "different",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@6"
+                      },
+                      "arguments": []
+                    }
                   }
                 ]
               },
@@ -322,11 +376,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                     "value": ">"
                   },
                   {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@6"
-                    },
-                    "arguments": []
+                    "$type": "Assignment",
+                    "feature": "sup",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@6"
+                      },
+                      "arguments": []
+                    }
                   }
                 ]
               },
@@ -338,11 +397,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                     "value": ">="
                   },
                   {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@6"
-                    },
-                    "arguments": []
+                    "$type": "Assignment",
+                    "feature": "supEqual",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@6"
+                      },
+                      "arguments": []
+                    }
                   }
                 ]
               },
@@ -354,11 +418,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                     "value": "<"
                   },
                   {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@6"
-                    },
-                    "arguments": []
+                    "$type": "Assignment",
+                    "feature": "inf",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@6"
+                      },
+                      "arguments": []
+                    }
                   }
                 ]
               },
@@ -370,11 +439,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                     "value": "<="
                   },
                   {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@6"
-                    },
-                    "arguments": []
+                    "$type": "Assignment",
+                    "feature": "infEqual",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@6"
+                      },
+                      "arguments": []
+                    }
                   }
                 ]
               }
@@ -393,15 +467,23 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     {
       "$type": "ParserRule",
       "name": "Exp4",
+      "returnType": {
+        "$ref": "#/interfaces@8"
+      },
       "definition": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@7"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "left",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@7"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Alternatives",
@@ -414,11 +496,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                     "value": "+"
                   },
                   {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@7"
-                    },
-                    "arguments": []
+                    "$type": "Assignment",
+                    "feature": "addition",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@7"
+                      },
+                      "arguments": []
+                    }
                   }
                 ]
               },
@@ -430,11 +517,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                     "value": "-"
                   },
                   {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@7"
-                    },
-                    "arguments": []
+                    "$type": "Assignment",
+                    "feature": "subtraction",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@7"
+                      },
+                      "arguments": []
+                    }
                   }
                 ]
               }
@@ -453,15 +545,23 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     {
       "$type": "ParserRule",
       "name": "Exp5",
+      "returnType": {
+        "$ref": "#/interfaces@9"
+      },
       "definition": {
         "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@8"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "left",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@8"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Alternatives",
@@ -474,11 +574,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                     "value": "*"
                   },
                   {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@8"
-                    },
-                    "arguments": []
+                    "$type": "Assignment",
+                    "feature": "multiplication",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@8"
+                      },
+                      "arguments": []
+                    }
                   }
                 ]
               },
@@ -490,11 +595,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                     "value": "/"
                   },
                   {
-                    "$type": "RuleCall",
-                    "rule": {
-                      "$ref": "#/rules@8"
-                    },
-                    "arguments": []
+                    "$type": "Assignment",
+                    "feature": "division",
+                    "operator": "=",
+                    "terminal": {
+                      "$type": "RuleCall",
+                      "rule": {
+                        "$ref": "#/rules@8"
+                      },
+                      "arguments": []
+                    }
                   }
                 ]
               }
@@ -513,22 +623,35 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     {
       "$type": "ParserRule",
       "name": "Primaire",
+      "returnType": {
+        "$ref": "#/interfaces@10"
+      },
       "definition": {
         "$type": "Alternatives",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@56"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "value",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@57"
+              },
+              "arguments": []
+            }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@60"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "varName",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@61"
+              },
+              "arguments": []
+            }
           },
           {
             "$type": "Group",
@@ -538,11 +661,16 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                 "value": "("
               },
               {
-                "$type": "RuleCall",
-                "rule": {
-                  "$ref": "#/rules@2"
-                },
-                "arguments": []
+                "$type": "Assignment",
+                "feature": "expression",
+                "operator": "=",
+                "terminal": {
+                  "$type": "RuleCall",
+                  "rule": {
+                    "$ref": "#/rules@2"
+                  },
+                  "arguments": []
+                }
               },
               {
                 "$type": "Keyword",
@@ -600,7 +728,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@60"
+                "$ref": "#/rules@61"
               },
               "arguments": []
             }
@@ -694,7 +822,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "Variable",
       "returnType": {
-        "$ref": "#/interfaces@5"
+        "$ref": "#/interfaces@11"
       },
       "definition": {
         "$type": "Group",
@@ -710,7 +838,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@60"
+                "$ref": "#/rules@61"
               },
               "arguments": []
             }
@@ -936,7 +1064,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@57"
+                "$ref": "#/rules@63"
               },
               "arguments": []
             }
@@ -954,7 +1082,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "Movement",
       "returnType": {
-        "$ref": "#/interfaces@7"
+        "$ref": "#/interfaces@12"
       },
       "definition": {
         "$type": "Group",
@@ -962,7 +1090,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@7"
+              "$ref": "#/interfaces@12"
             }
           },
           {
@@ -976,7 +1104,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@27"
+                "$ref": "#/rules@28"
               },
               "arguments": []
             }
@@ -988,7 +1116,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@62"
               },
               "arguments": []
             }
@@ -1000,7 +1128,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@32"
+                "$ref": "#/rules@33"
               },
               "arguments": []
             }
@@ -1018,7 +1146,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "Rotation",
       "returnType": {
-        "$ref": "#/interfaces@10"
+        "$ref": "#/interfaces@14"
       },
       "definition": {
         "$type": "Group",
@@ -1026,7 +1154,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@10"
+              "$ref": "#/interfaces@14"
             }
           },
           {
@@ -1040,7 +1168,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@61"
+                "$ref": "#/rules@62"
               },
               "arguments": []
             }
@@ -1058,7 +1186,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "Sensors",
       "returnType": {
-        "$ref": "#/interfaces@11"
+        "$ref": "#/interfaces@15"
       },
       "definition": {
         "$type": "Group",
@@ -1066,7 +1194,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@11"
+              "$ref": "#/interfaces@15"
             }
           },
           {
@@ -1091,7 +1219,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@44"
+                    "$ref": "#/rules@45"
                   },
                   "arguments": []
                 }
@@ -1113,7 +1241,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@44"
+                    "$ref": "#/rules@45"
                   },
                   "arguments": []
                 }
@@ -1138,7 +1266,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "Loop",
       "returnType": {
-        "$ref": "#/interfaces@12"
+        "$ref": "#/interfaces@16"
       },
       "definition": {
         "$type": "Group",
@@ -1201,7 +1329,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "Condition",
       "returnType": {
-        "$ref": "#/interfaces@13"
+        "$ref": "#/interfaces@17"
       },
       "definition": {
         "$type": "Group",
@@ -1209,7 +1337,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@13"
+              "$ref": "#/interfaces@17"
             }
           },
           {
@@ -1270,7 +1398,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "Assignment",
       "returnType": {
-        "$ref": "#/interfaces@14"
+        "$ref": "#/interfaces@18"
       },
       "definition": {
         "$type": "Group",
@@ -1282,7 +1410,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@59"
+                "$ref": "#/rules@60"
               },
               "arguments": []
             }
@@ -1316,7 +1444,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "FunctionCall",
       "returnType": {
-        "$ref": "#/interfaces@15"
+        "$ref": "#/interfaces@19"
       },
       "definition": {
         "$type": "Group",
@@ -1324,7 +1452,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
           {
             "$type": "Action",
             "type": {
-              "$ref": "#/interfaces@15"
+              "$ref": "#/interfaces@19"
             }
           },
           {
@@ -1334,7 +1462,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "terminal": {
               "$type": "RuleCall",
               "rule": {
-                "$ref": "#/rules@60"
+                "$ref": "#/rules@61"
               },
               "arguments": []
             }
@@ -1353,7 +1481,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                 "terminal": {
                   "$type": "RuleCall",
                   "rule": {
-                    "$ref": "#/rules@56"
+                    "$ref": "#/rules@57"
                   },
                   "arguments": []
                 }
@@ -1372,7 +1500,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
                     "terminal": {
                       "$type": "RuleCall",
                       "rule": {
-                        "$ref": "#/rules@56"
+                        "$ref": "#/rules@57"
                       },
                       "arguments": []
                     }
@@ -1400,7 +1528,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "ReturnInstruction",
       "returnType": {
-        "$ref": "#/interfaces@16"
+        "$ref": "#/interfaces@20"
       },
       "definition": {
         "$type": "Group",
@@ -1432,6 +1560,58 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     },
     {
       "$type": "ParserRule",
+      "name": "Speed",
+      "returnType": {
+        "$ref": "#/interfaces@13"
+      },
+      "definition": {
+        "$type": "Group",
+        "elements": [
+          {
+            "$type": "Action",
+            "type": {
+              "$ref": "#/interfaces@13"
+            }
+          },
+          {
+            "$type": "Keyword",
+            "value": "Speed"
+          },
+          {
+            "$type": "Assignment",
+            "feature": "speed",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@2"
+              },
+              "arguments": []
+            }
+          },
+          {
+            "$type": "Assignment",
+            "feature": "unit",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@33"
+              },
+              "arguments": []
+            }
+          }
+        ]
+      },
+      "definesHiddenTokens": false,
+      "entry": false,
+      "fragment": false,
+      "hiddenTokens": [],
+      "parameters": [],
+      "wildcard": false
+    },
+    {
+      "$type": "ParserRule",
       "name": "Direction",
       "returnType": {
         "$ref": "#/types@30"
@@ -1439,13 +1619,6 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "definition": {
         "$type": "Alternatives",
         "elements": [
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@28"
-            },
-            "arguments": []
-          },
           {
             "$type": "RuleCall",
             "rule": {
@@ -1464,6 +1637,13 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@31"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@32"
             },
             "arguments": []
           }
@@ -1556,13 +1736,6 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@33"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
               "$ref": "#/rules@34"
             },
             "arguments": []
@@ -1578,6 +1751,13 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@36"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@37"
             },
             "arguments": []
           }
@@ -1670,13 +1850,6 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@38"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
               "$ref": "#/rules@39"
             },
             "arguments": []
@@ -1692,6 +1865,13 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@41"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@42"
             },
             "arguments": []
           }
@@ -1835,20 +2015,6 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@47"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@46"
-            },
-            "arguments": []
-          },
-          {
-            "$type": "RuleCall",
-            "rule": {
               "$ref": "#/rules@48"
             },
             "arguments": []
@@ -1856,7 +2022,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@55"
+              "$ref": "#/rules@47"
             },
             "arguments": []
           },
@@ -1864,6 +2030,13 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@49"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@56"
             },
             "arguments": []
           },
@@ -1899,6 +2072,13 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "$type": "RuleCall",
             "rule": {
               "$ref": "#/rules@54"
+            },
+            "arguments": []
+          },
+          {
+            "$type": "RuleCall",
+            "rule": {
+              "$ref": "#/rules@55"
             },
             "arguments": []
           }
@@ -2085,31 +2265,46 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "Value",
       "returnType": {
-        "$ref": "#/interfaces@17"
+        "$ref": "#/interfaces@21"
       },
       "definition": {
         "$type": "Alternatives",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@58"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "boolean",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@59"
+              },
+              "arguments": []
+            }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@59"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "variableRef",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@60"
+              },
+              "arguments": []
+            }
           },
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@61"
-            },
-            "arguments": []
+            "$type": "Assignment",
+            "feature": "number_",
+            "operator": "=",
+            "terminal": {
+              "$type": "RuleCall",
+              "rule": {
+                "$ref": "#/rules@58"
+              },
+              "arguments": []
+            }
           }
         ]
       },
@@ -2122,22 +2317,20 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     },
     {
       "$type": "ParserRule",
-      "name": "EString",
-      "dataType": "string",
+      "name": "EInt",
+      "dataType": "number",
       "definition": {
-        "$type": "Alternatives",
+        "$type": "Group",
         "elements": [
           {
-            "$type": "RuleCall",
-            "rule": {
-              "$ref": "#/rules@62"
-            },
-            "arguments": []
+            "$type": "Keyword",
+            "value": "-",
+            "cardinality": "?"
           },
           {
             "$type": "RuleCall",
             "rule": {
-              "$ref": "#/rules@60"
+              "$ref": "#/rules@62"
             },
             "arguments": []
           }
@@ -2153,17 +2346,29 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     {
       "$type": "ParserRule",
       "name": "EBoolean",
-      "dataType": "boolean",
+      "returnType": {
+        "$ref": "#/interfaces@23"
+      },
       "definition": {
         "$type": "Alternatives",
         "elements": [
           {
-            "$type": "Keyword",
-            "value": "true"
+            "$type": "Assignment",
+            "feature": "boolean",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "true"
+            }
           },
           {
-            "$type": "Keyword",
-            "value": "false"
+            "$type": "Assignment",
+            "feature": "boolean",
+            "operator": "=",
+            "terminal": {
+              "$type": "Keyword",
+              "value": "false"
+            }
           }
         ]
       },
@@ -2178,7 +2383,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "$type": "ParserRule",
       "name": "VariableRef",
       "returnType": {
-        "$ref": "#/interfaces@18"
+        "$ref": "#/interfaces@22"
       },
       "definition": {
         "$type": "Assignment",
@@ -2187,7 +2392,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
         "terminal": {
           "$type": "RuleCall",
           "rule": {
-            "$ref": "#/rules@60"
+            "$ref": "#/rules@61"
           },
           "arguments": []
         }
@@ -2671,7 +2876,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@5"
+                "$ref": "#/interfaces@11"
               }
             }
           },
@@ -2785,8 +2990,291 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     },
     {
       "$type": "Interface",
+      "attributes": [
+        {
+          "$type": "TypeAttribute",
+          "name": "left",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@5"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "right",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@5"
+            }
+          },
+          "isOptional": false
+        }
+      ],
       "name": "Expression",
-      "attributes": [],
+      "superTypes": []
+    },
+    {
+      "$type": "Interface",
+      "attributes": [
+        {
+          "$type": "TypeAttribute",
+          "name": "left",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@6"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "right",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@6"
+            }
+          },
+          "isOptional": false
+        }
+      ],
+      "name": "Exp1",
+      "superTypes": []
+    },
+    {
+      "$type": "Interface",
+      "attributes": [
+        {
+          "$type": "TypeAttribute",
+          "name": "left",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@6"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "right",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@7"
+            }
+          },
+          "isOptional": false
+        }
+      ],
+      "name": "Exp2",
+      "superTypes": []
+    },
+    {
+      "$type": "Interface",
+      "attributes": [
+        {
+          "$type": "TypeAttribute",
+          "name": "left",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@8"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "equal",
+          "isOptional": true,
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@8"
+            }
+          }
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "different",
+          "isOptional": true,
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@8"
+            }
+          }
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "sup",
+          "isOptional": true,
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@8"
+            }
+          }
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "supEqual",
+          "isOptional": true,
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@8"
+            }
+          }
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "inf",
+          "isOptional": true,
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@8"
+            }
+          }
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "infEqual",
+          "isOptional": true,
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@8"
+            }
+          }
+        }
+      ],
+      "name": "Exp3",
+      "superTypes": []
+    },
+    {
+      "$type": "Interface",
+      "attributes": [
+        {
+          "$type": "TypeAttribute",
+          "name": "left",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@9"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "addition",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@9"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "subtraction",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@9"
+            }
+          },
+          "isOptional": false
+        }
+      ],
+      "name": "Exp4",
+      "superTypes": []
+    },
+    {
+      "$type": "Interface",
+      "attributes": [
+        {
+          "$type": "TypeAttribute",
+          "name": "left",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@10"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "multiplication",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@10"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "division",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@10"
+            }
+          },
+          "isOptional": false
+        }
+      ],
+      "name": "Exp5",
+      "superTypes": []
+    },
+    {
+      "$type": "Interface",
+      "attributes": [
+        {
+          "$type": "TypeAttribute",
+          "name": "value",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@21"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "varName",
+          "type": {
+            "$type": "SimpleType",
+            "primitiveType": "string"
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "expression",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@4"
+            }
+          },
+          "isOptional": false
+        }
+      ],
+      "name": "Primaire",
       "superTypes": []
     },
     {
@@ -2817,50 +3305,6 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       "superTypes": [
         {
           "$ref": "#/interfaces@2"
-        }
-      ]
-    },
-    {
-      "$type": "Interface",
-      "attributes": [
-        {
-          "$type": "TypeAttribute",
-          "name": "booleanOperator",
-          "isOptional": true,
-          "type": {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/types@7"
-            }
-          }
-        },
-        {
-          "$type": "TypeAttribute",
-          "name": "left",
-          "type": {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@19"
-            }
-          },
-          "isOptional": false
-        },
-        {
-          "$type": "TypeAttribute",
-          "name": "right",
-          "type": {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@19"
-            }
-          },
-          "isOptional": false
-        }
-      ],
-      "name": "BooleanExpression",
-      "superTypes": [
-        {
-          "$ref": "#/interfaces@4"
         }
       ]
     },
@@ -2912,24 +3356,21 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
         {
           "$type": "TypeAttribute",
           "name": "unit",
-          "isOptional": true,
           "type": {
             "$type": "SimpleType",
             "typeRef": {
               "$ref": "#/types@18"
             }
-          }
+          },
+          "isOptional": false
         },
         {
           "$type": "TypeAttribute",
-          "name": "arithmeticexpression",
+          "name": "speed",
           "type": {
-            "$type": "ArrayType",
-            "elementType": {
-              "$type": "SimpleType",
-              "typeRef": {
-                "$ref": "#/interfaces@9"
-              }
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@4"
             }
           },
           "isOptional": false
@@ -2937,50 +3378,6 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
       ],
       "name": "Speed",
       "superTypes": []
-    },
-    {
-      "$type": "Interface",
-      "attributes": [
-        {
-          "$type": "TypeAttribute",
-          "name": "arithmeticOperator",
-          "isOptional": true,
-          "type": {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/types@23"
-            }
-          }
-        },
-        {
-          "$type": "TypeAttribute",
-          "name": "left",
-          "type": {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@20"
-            }
-          },
-          "isOptional": false
-        },
-        {
-          "$type": "TypeAttribute",
-          "name": "right",
-          "type": {
-            "$type": "SimpleType",
-            "typeRef": {
-              "$ref": "#/interfaces@20"
-            }
-          },
-          "isOptional": false
-        }
-      ],
-      "name": "ArithmeticExpression",
-      "superTypes": [
-        {
-          "$ref": "#/interfaces@4"
-        }
-      ]
     },
     {
       "$type": "Interface",
@@ -3116,7 +3513,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
           "type": {
             "$type": "SimpleType",
             "typeRef": {
-              "$ref": "#/interfaces@18"
+              "$ref": "#/interfaces@22"
             }
           },
           "isOptional": false
@@ -3160,7 +3557,7 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
             "elementType": {
               "$type": "SimpleType",
               "typeRef": {
-                "$ref": "#/interfaces@17"
+                "$ref": "#/interfaces@21"
               }
             }
           },
@@ -3212,14 +3609,41 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
               "$ref": "#/types@0"
             }
           }
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "boolean",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@23"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "variableRef",
+          "type": {
+            "$type": "SimpleType",
+            "typeRef": {
+              "$ref": "#/interfaces@22"
+            }
+          },
+          "isOptional": false
+        },
+        {
+          "$type": "TypeAttribute",
+          "name": "number_",
+          "type": {
+            "$type": "SimpleType",
+            "primitiveType": "number"
+          },
+          "isOptional": false
         }
       ],
       "name": "Value",
-      "superTypes": [
-        {
-          "$ref": "#/interfaces@4"
-        }
-      ]
+      "superTypes": []
     },
     {
       "$type": "Interface",
@@ -3239,8 +3663,18 @@ export const MyDslGrammar = () => loadedMyDslGrammar !== null && loadedMyDslGram
     },
     {
       "$type": "Interface",
-      "name": "BooleanValue",
-      "attributes": [],
+      "attributes": [
+        {
+          "$type": "TypeAttribute",
+          "name": "boolean",
+          "type": {
+            "$type": "SimpleType",
+            "primitiveType": "string"
+          },
+          "isOptional": false
+        }
+      ],
+      "name": "EBoolean",
       "superTypes": []
     },
     {

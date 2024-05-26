@@ -40,3 +40,4 @@ Float
 EString
 EBoolean
 VariableRef
+Speed

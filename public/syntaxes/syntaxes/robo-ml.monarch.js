@@ -4,9 +4,9 @@ export default {
         'Backward', 'Boolean', 'Char', 'Double', 'Float', 'Forward', 'Int', 'Left', 'Movement', 'Right', 'Rotation', 'Sensors', 'String', 'cm', 'distance', 'dm', 'false', 'if', 'let', 'loop', 'm', 'mm', 'return', 'time', 'true', 'var', 'void'
     ],
     operators: [
-        '!', '&&', '*', '+', ',', '-', '/', '<', '<=', '<>', '=', '>', '>=', '||'
+        '!', '!=', '&&', '*', '+', ',', '-', '/', '<', '<=', '=', '>', '>=', '||'
     ],
-    symbols: /!|&&|\(|\)|\*|\+|,|-|\/|<|<=|<>|=|>|>=|\{|\|\||\}/,
+    symbols: /!|!=|&&|\(|\)|\*|\+|,|-|\/|<|<=|=|>|>=|\{|\|\||\}/,
     tokenizer: {
         initial: [
             { regex: /(\^?(([a-z]|[A-Z])|_)((([a-z]|[A-Z])|_)|[0-9])*)/, action: { cases: { '@keywords': { "token": "keyword" }, '@default': { "token": "string" } } } },
